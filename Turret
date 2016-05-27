@@ -3,7 +3,11 @@ import java.awt.Graphics;
 
 public abstract class Turret extends Entity
 {
-    public abstract int getRaidus();
+    private int radius = 1;
+    public int getRadius()
+    {
+        return radius;
+    }
     public abstract int getDamage();
     public abstract int getReloadSpeed();
     public abstract void fire();
