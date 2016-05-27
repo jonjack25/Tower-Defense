@@ -1,0 +1,18 @@
+
+import java.awt.Graphics;
+
+public abstract class Enemy
+{
+    public abstract double getSpeed();
+    public abstract int getHealth();
+    //public abstract pos getPosition();
+    public abstract void setPosition(/*int x, int y*/);
+    public void draw(Graphics g)
+    {
+        
+    }
+    public abstract void upgrade();
+    public abstract void getPath();
+    public abstract void getHit();
+    public abstract void getDirection();
+}
