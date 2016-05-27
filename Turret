@@ -1,0 +1,12 @@
+
+import java.awt.Graphics;
+
+public abstract class Turret extends Entity
+{
+    public abstract int getRaidus();
+    public abstract int getDamage();
+    public abstract int getReloadSpeed();
+    public abstract void fire();
+    public abstract void draw(Graphics g);
+    public abstract void upgrade();
+}
