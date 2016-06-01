@@ -1,51 +1,37 @@
-
-/**
- * Write a description of class GameFrame here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 import javax.swing.*;
 import java.awt.*;
 public class GameFrame extends JFrame
 {
-    //public GameFrame(String title, GraphicsConfiguration gc)
-    {
-        //super(title, gc);
-    }
+    private static String title = "Tower Defense Game";
+    public static int width = 1024, height = 768;
+    public static Dimension size = new Dimension(width, height);
     
-    public GameFrame(String title)
+    public GameFrame()
     {
-        super(title);
-        //setResizable(false);
-        setSize(1024, 760);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setTitle(title);
+        setSize(size);
+        //setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        
+        setUpGUI();
     }
 
     public static void main(String args[])
     {
-        setUpGUI();
+        GameFrame frame = new GameFrame();
     }
     
-    public static void setUpGUI()
+    public void setUpGUI()
     {
-        GameFrame frame = new GameFrame("Tower Defense");
-        GameScreen gs = new GameScreen();
+        setLayout(new GridLayout(1, 1, 0, 0));
+        
+        GameScreen gs = new GameScreen(this);
+        //gs.setSize(this.getWidth(), 600);
+        add(gs);
+        
         TurretBar tb = new TurretBar();
-        InfoBar ib = new InfoBar();
-        
-        tb.setPreferredSize(new Dimension(0, 300));
-        gs.setPreferredSize(new Dimension(0, frame.getHeight() - 300));
-        
-        gs.setBackground(Color.BLACK);
-        tb.setBackground(Color.GRAY);
-        ib.setBackground(Color.BLUE);
-                
-        frame.add(gs, BorderLayout.NORTH);
-        frame.add(tb, BorderLayout.SOUTH);
-        frame.add(ib, BorderLayout.EAST);  
-       
+        setVisible(true);
     }
 }
