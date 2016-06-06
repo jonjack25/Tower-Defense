@@ -1,0 +1,28 @@
+public class StrongTurret extends Turret
+{
+    public static final int PURCHASE_COST = 500;
+    private final int reload;    
+    private int damage;
+    private int upgrade = 25;
+    
+    public StrongTurret()
+    {
+        reload = 2000;
+        damage = 500;
+    }
+    
+    public int getDamage()
+    {
+        return damage;
+    }
+    
+    public int getReloadSpeed()
+    {
+        return reload;
+    }
+    
+    public void upgrade()
+    {
+        damage += upgrade;
+    }
+}
