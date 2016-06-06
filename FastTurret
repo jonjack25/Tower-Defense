@@ -1,0 +1,31 @@
+
+public class FastTurret extends Turret
+{
+    public static final int PURCHASE_COST = 300;
+    private final int reload;    
+    private int damage;
+    private int upgrade = 5;
+    private Position pos;
+    
+    public FastTurret()
+    {
+        pos = p;
+        reload = 250;
+        damage = 75;
+    }
+    
+    public int getDamage()
+    {
+        return damage;
+    }
+    
+    public int getReloadSpeed()
+    {
+        return reload;
+    }
+    
+    public void upgrade()
+    {
+        damage += upgrade;
+    }
+}
