@@ -1,0 +1,26 @@
+public class SlowEnemy extends Enemy
+{   
+   private final double speed;
+   private int health;    
+   
+   public SlowEnemy()
+   {
+       speed = 0;
+       health = 50;
+   }
+   
+   public double getSpeed()
+   {
+       return speed;
+   }
+   
+   public int getHealth()
+   {
+       return health;
+   }
+   
+   public void upgrade()
+   {
+       health += 15;
+   }
+}
