@@ -1,0 +1,26 @@
+public class QuickEnemy extends Enemy
+{
+   private final double speed;
+   private int health;    
+   
+   public QuickEnemy()
+   {
+       speed = 0;
+       health = 400;
+   }
+   
+   public double getSpeed()
+   {
+       return speed;
+   }
+   
+   public int getHealth()
+   {
+       return health;
+   }
+   
+   public void upgrade()
+   {
+       health += 50;
+   }
+}
