@@ -1,0 +1,29 @@
+
+public class BaseTurret extends Turret
+{
+    public static final int PURCHASE_COST = 400;
+    private final int reload;    
+    private int damage;
+    private int upgrade = 15;
+    
+    public BaseTurret()
+    {
+        reload = 1000;
+        damage = 200;
+    }
+    
+    public int getDamage()
+    {
+        return damage;
+    }
+    
+    public int getReloadSpeed()
+    {
+        return reload;
+    }
+    
+    public void upgrade()
+    {
+        damage += upgrade;
+    }
+}
