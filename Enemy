@@ -1,18 +1,79 @@
-
+import java.awt.Color;
 import java.awt.Graphics;
+import javax.swing.*;
+import javax.swing.Timer;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public abstract class Enemy
+public abstract class Enemy extends Entity
 {
+    private Position pos;
+    //private GamePath path;
+    private Timer slowEnemy;
+    private Timer baseEnemy;
+    private Timer quickEnemy;
+    
+    public Enemy(Position p)
+    {
+        pos = p;
+    }
+    
     public abstract double getSpeed();
     public abstract int getHealth();
-    //public abstract pos getPosition();
-    public abstract void setPosition(/*int x, int y*/);
+    public abstract void upgrade();
+    
+    public Position getPosition()
+    {
+        return pos;
+    }
+    
+    public void slowEnemyMove(int speed)
+    {
+        slowEnemy = new Timer(speed, new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                //move a certain number of spaces
+                return;
+            }
+        });
+    }
+    
+    public void baseEnemyMove(int speed)
+    {
+        baseEnemy = new Timer(speed, new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                //move a certain number of spaces
+                return;
+            }
+        });
+    }
+    
+    public void quickEnemyMove(int speed)
+    {
+        quickEnemy = new Timer(speed, new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                //move a certain number of spaces
+                return;
+            }
+        });
+    }
+    
+    public Position setPosition(int x, int y)
+    {
+        return pos = new Position(x, y, 2);
+    }
+    
     public void draw(Graphics g)
     {
-        
+        int height = 2;
+        int width = 2;
+        g.setColor(Color.WHITE);
+        g.fillArc(pos.getXCoordinate(), pos.getYCoordinate(), height, width, 0, 360);
     }
-    public abstract void upgrade();
-    public abstract void getPath();
-    public abstract void getHit();
-    public abstract void getDirection();
 }
