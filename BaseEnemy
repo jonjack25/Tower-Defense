@@ -1,25 +1,45 @@
+import java.awt.Graphics;
+
 public class BaseEnemy extends Enemy
 {
-   private final double speed;
-   private int health;    
+   private int killCost = 10;
+   private final int speed;
+   public static int HEALTH = 150;
    
-   public BaseEnemy()
+   public BaseEnemy(Position p)
    {
-       speed = 0;
-       health = 150;
-   }
-   
-   public double getSpeed()
-   {
-       return speed;
+       super(p);
+       speed = 2;
+       HEALTH = HEALTH;
    }
    
    public int getHealth()
    {
-       return health;
+       return HEALTH;
    }
    
-   public void upgrade()
+   public int getKillCost()
    {
-       health += 35;
+       return killCost;
    }
+   
+   public int getSpeed()
+   {
+       return speed;
+   }
+   
+   public int changeHealth(int damage)
+   {
+        return HEALTH;
+   }
+   
+   public void move()
+   {
+       super.moveTime(speed);
+   }
+   
+   public void draw(Graphics g)
+   {
+       
+   }
+}
