@@ -1,16 +1,73 @@
-
 import java.awt.Graphics;
+import java.util.*;
+import javax.swing.Timer;
+import java.util.TimerTask;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public abstract class Turret extends Entity
 {
     private int radius = 1;
+    private int speed;
+    private boolean canFire = true;
+    private Position pos;
+    private Timer reload;
+    private Bullet b;
+    private Enemy fireAt;
+
+    public Turret(Position p)
+    {
+        pos = p;
+        canFire(speed);
+    }
+    
+    public abstract int getDamage();
+    public abstract int getReloadSpeed();
+    public abstract void draw(Graphics g);
+    
+    public void setPosition(Position p)
+    {
+        pos = p;
+    }
+    
+    public Position getPosition()
+    {
+        return pos;
+    }
+    
     public int getRadius()
     {
         return radius;
     }
-    public abstract int getDamage();
-    public abstract int getReloadSpeed();
-    public abstract void fire();
-    public abstract void draw(Graphics g);
-    public abstract void upgrade();
+    
+    public void canFire(int speed)
+    {
+        reload = new Timer(speed, new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                canFire = true;
+            }
+        });
+    }
+    
+    public Bullet fire(List<Enemy> e)
+    {
+        double distance = 0;
+        if(canFire)
+        {
+            for(int i = 0; i < e.size(); i++)
+            {
+                distance = Math.sqrt(Math.pow(e.get(i).getXCoordinate() - pos.getXCoordinate(), 2) + Math.pow(e.get(i).getYCoordinate() - pos.getYCoordinate(), 2));        
+                if(radius >= distance)
+                {
+                    b = new Bullet(e.get(i));
+                    canFire = false;
+                    reload.restart();
+                    return b;
+                }
+            }
+        }
+        return null;
+    }
 }
