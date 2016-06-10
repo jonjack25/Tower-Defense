@@ -27,11 +27,8 @@ public class Bullet extends Entity
         //moveTowardsEnemy
     }
     
-    /*
     public void draw(Graphics g)
     {
-        g.setColor(Color.BLACK);
-        g.fillOval(pos.getXCoordinate(), pos.getYCoordinate(), 1, 2);
+        
     }
-    */
 }
