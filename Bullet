@@ -1,33 +1,37 @@
+import java.awt.Color;
+import java.awt.Graphics;
 
-/**
- * Write a description of class Bullet here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class Bullet extends Entity
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
-    /**
-     * Constructor for objects of class Bullet
-     */
-    public Bullet()
+    private Enemy e;
+    private Position pos;
+    private final int speed = 4;
+    
+    public Bullet(Enemy enemy)
     {
-        // initialise instance variables
-        x = 0;
+        e = enemy;
     }
-
-    /**
-     * An example of a method - replace this comment with your own
-     * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
-     */
-    public int sampleMethod(int y)
+    
+    public void setPosition(Position p)
     {
-        // put your code here
-        return x + y;
+        pos = p;
     }
+    
+    public Position getPosition()
+    {
+        return pos;
+    }
+            
+    public void move()
+    {
+        //moveTowardsEnemy
+    }
+    
+    /*
+    public void draw(Graphics g)
+    {
+        g.setColor(Color.BLACK);
+        g.fillOval(pos.getXCoordinate(), pos.getYCoordinate(), 1, 2);
+    }
+    */
 }
