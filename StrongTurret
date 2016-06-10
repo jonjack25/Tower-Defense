@@ -1,12 +1,16 @@
+import java.awt.Graphics;
+
 public class StrongTurret extends Turret
 {
-    public static final int PURCHASE_COST = 500;
-    private final int reload;    
     private int damage;
     private int upgrade = 25;
+    private final int reload;
+    public static final int PURCHASE_COST = 500;
+    private Enemy fireAt;
     
-    public StrongTurret()
+    public StrongTurret(Position p)
     {
+        super(p);
         reload = 2000;
         damage = 500;
     }
@@ -24,5 +28,15 @@ public class StrongTurret extends Turret
     public void upgrade()
     {
         damage += upgrade;
+    }        
+    
+    public void fire()
+    {
+        super.canFire(reload);
+    }
+    
+    public void draw(Graphics g)
+    {
+        
     }
 }
