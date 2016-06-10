@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.*;
 import javax.swing.Timer;
@@ -8,72 +7,64 @@ import java.awt.event.ActionListener;
 
 public abstract class Enemy extends Entity
 {
+    private boolean canMove = false;
     private Position pos;
-    //private GamePath path;
-    private Timer slowEnemy;
-    private Timer baseEnemy;
-    private Timer quickEnemy;
+    private Timer moving;
+    private GamePath path;
     
     public Enemy(Position p)
     {
         pos = p;
+        moving.start();
     }
     
-    public abstract double getSpeed();
+    public abstract int getSpeed();
     public abstract int getHealth();
-    public abstract void upgrade();
+    public abstract int getKillCost();
+    public abstract void draw(Graphics g);
+    
+    public void setPosition(Position p)
+    {
+        pos = p;
+    }
     
     public Position getPosition()
     {
         return pos;
     }
     
-    public void slowEnemyMove(int speed)
+    public path getPath()
     {
-        slowEnemy = new Timer(speed, new ActionListener()
+        return path;
+    }
+    
+    public int getXCoordinate()
+    {
+        return pos.getXCoordinate();
+    }
+    
+    public int getYCoordinate()
+    {
+        return pos.getYCoordinate();
+    }
+    
+    public void moveTime(int speed)
+    {
+        moving = new Timer(speed, new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
-                //move a certain number of spaces
-                return;
+                canMove = true;
             }
         });
     }
     
-    public void baseEnemyMove(int speed)
+    public void move()
     {
-        baseEnemy = new Timer(speed, new ActionListener()
+        if(canMove)
         {
-            public void actionPerformed(ActionEvent e)
-            {
-                //move a certain number of spaces
-                return;
-            }
-        });
-    }
-    
-    public void quickEnemyMove(int speed)
-    {
-        quickEnemy = new Timer(speed, new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                //move a certain number of spaces
-                return;
-            }
-        });
-    }
-    
-    public Position setPosition(int x, int y)
-    {
-        return pos = new Position(x, y, 2);
-    }
-    
-    public void draw(Graphics g)
-    {
-        int height = 2;
-        int width = 2;
-        g.setColor(Color.WHITE);
-        g.fillArc(pos.getXCoordinate(), pos.getYCoordinate(), height, width, 0, 360);
+            return path.getNextMove();
+        }
+        return null;
     }
 }
