@@ -5,7 +5,6 @@ public class Bullet extends Entity
 {
     private Enemy e;
     private Position pos;
-    private final int speed = 4;
     private int damage;
     private int gameState = 0;
     
