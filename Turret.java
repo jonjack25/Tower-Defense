@@ -37,6 +37,11 @@ public abstract class Turret extends Entity
         pos = p;
     }
     
+    public int getUpgradeCost()
+    {
+        return upgradeCost;
+    }
+    
     public Position getPosition()
     {
         return pos;
