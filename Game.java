@@ -16,12 +16,11 @@ public class Game
     private int enemyCount;
     private int typeToSpawn;
     private int randSpawnTime;
-    private int spawnPosition;
     private Timer spawn, interval;
     
-    public static int t1Count = 0;
-    public static int t2Count = 0;
-    public static int t3Count = 0;
+    public static int numTur = 0;
+    
+    private Position temp = new Position(10, 10, 10, 10, 10, 10);
 
     public Game()
     {
@@ -34,7 +33,6 @@ public class Game
         coins = 300;
         randSpawnTime = (int)(Math.random() * 2001) + 500;
         typeToSpawn = (int)(Math.random() * 3);
-        spawnPosition = (int)(Math.random() * 4) + 3;
         spawn = new Timer(randSpawnTime, new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -42,28 +40,15 @@ public class Game
                 if(enemyCount > 0)
                 {
                     if(typeToSpawn == 0)
-                    {
-                        Enemy e = new BaseEnemy(grid.getGameGrid()[spawnPosition][0])
-                        enemies.add(e);
-                        grid.setFilled(grid.getGameGrid()[spawnPosition][0], e);
-                    }
+                        enemies.add(new BaseEnemy(grid.getGameGrid()[7][2]));
                     else if(typeToSpawn == 1)
-                    {
-                        Enemy e = new QuickEnemy(grid.getGameGrid()[spawnPosition][0])
-                        enemies.add(e);
-                        grid.setFilled(grid.getGameGrid()[spawnPosition][0], e);
-                    }
+                        enemies.add(new QuickEnemy(grid.getGameGrid()[7][2]));
                     else
-                    {
-                        Enemy e = new SlowEnemy(grid.getGameGrid()[spawnPosition][0])
-                        enemies.add(e);
-                        grid.setFilled(grid.getGameGrid()[spawnPosition][0], e);
-                    }
+                        enemies.add(new SlowEnemy(grid.getGameGrid()[7][2]));
                       
                     randSpawnTime = (int)(Math.random() * 2001) + 500;
                     //setDelay(randSpawnTime);
-                    typeToSpawn = (int)(Math.random() * 3);
-                    spawnPosition = (int)(Math.random() * 4) + 3;
+                    typeToSpawn = (int)(Math.random() * 3);  
                     enemyCount--;
                 }
             }
@@ -88,21 +73,12 @@ public class Game
     {
         if(gameState == 0)
         {
-            if(!first)
-            {
-               interval.start();
-               first = !first;
-            }
+            interval.start();
             spawn.stop();
         }
         else if(gameState == 1)
         {
-            spawn.setDelay(randSpawnTimer);
-            if(first)
-            {
-                spawn.start();
-                first = !first;
-            }
+            spawn.start();
             interval.stop();
             fireTurrets();
             moveEnemies();
@@ -137,7 +113,7 @@ public class Game
         if(coins >= StrongTurret.PURCHASE_COST)
         {
             coins -= StrongTurret.PURCHASE_COST;
-            return new StrongTurret();
+            return new StrongTurret(temp);
         }
         return null;
     }
@@ -147,7 +123,7 @@ public class Game
         if(coins >= FastTurret.PURCHASE_COST)
         {
             coins -= FastTurret.PURCHASE_COST;
-            return new FastTurret();
+            return new FastTurret(temp);
         }
         return null;
     }
@@ -157,7 +133,7 @@ public class Game
         if(coins >= BaseTurret.PURCHASE_COST)
         {
             coins -= BaseTurret.PURCHASE_COST;
-            return new BaseTurret();
+            return new BaseTurret(temp);
         }
         return null;
     }
@@ -176,6 +152,16 @@ public class Game
     {
         turrets.add(t);
         t.setPosition(p);
+        int x = p.getRow();
+        int y = p.getCol();
+        for(int i = x; i > x - 3; i--)
+        {
+            for(int j = y; j > y - 3; j--)
+            {
+                grid.setFilled(grid.getGameGrid()[i][j], t);
+            }
+        }
+        
     }
     
     public void upgradeTurret(Turret t)
@@ -212,19 +198,7 @@ public class Game
     
     public void moveBullets()
     {
-        Point temp;
-        for(Bullet b : bullets)
-        {
-            if(b.move() == null)
-                continue;
-            else
-            {
-                temp = b.move();
-                grid.setFilled(b.getPosition(), null);
-                b.setPosition(grid.getGameGrid()[(int)temp.getX()][(int)temp.getY()]);
-                grid.setFilled(grid.getGameGrid()[(int)temp.getX()][(int)temp.getY()], b);
-            }
-        }
+        
     }
     
     public void moveEnemies()
@@ -329,5 +303,5 @@ public class Game
         }
         return false;
     }
-
+    
 }
