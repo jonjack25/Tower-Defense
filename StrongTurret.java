@@ -14,6 +14,13 @@ public class StrongTurret extends Turret
         setTimer(reload);
     }
     
+    public StrongTurret(Position p)
+    {
+        super(p, 500);
+        reload = 2000;
+        setTimer(reload);
+    }
+    
     public int getReloadSpeed()
     {
         return reload;
