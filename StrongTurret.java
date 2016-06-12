@@ -7,9 +7,9 @@ public class StrongTurret extends Turret
     public static final int PURCHASE_COST = 500;
     private Enemy fireAt;
     
-    public StrongTurret(Position p)
+    public StrongTurret()
     {
-        super(p, 500);
+        super(500);
         reload = 2000;
         setTimer(reload);
     }
