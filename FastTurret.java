@@ -7,9 +7,9 @@ public class FastTurret extends Turret
     public static final int PURCHASE_COST = 300;
     private Enemy fireAt;
     
-    public FastTurret(Position p)
+    public FastTurret()
     {
-        super(p, 75);
+        super(75);
         reload = 250;
         setTimer(reload);
     }
