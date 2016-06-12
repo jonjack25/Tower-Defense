@@ -14,6 +14,11 @@ public class Bullet extends Entity
         damage = d;
     }
     
+    public void changeGameState()
+    {
+        gameState = 1;
+    }
+    
     public void setPosition(Position p)
     {
         pos = p;
