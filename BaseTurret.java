@@ -14,6 +14,13 @@ public class BaseTurret extends Turret
         setTimer(reload);
     }
     
+    public BaseTurret(Position p)
+    {
+        super(p, 200);
+        reload = 1000;
+        setTimer(reload);
+    }
+    
     public int getReloadSpeed()
     {
         return reload;
