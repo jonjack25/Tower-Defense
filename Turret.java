@@ -17,6 +17,11 @@ public abstract class Turret extends Entity
     private Enemy fireAt;
     public int upgradeCost = 50;
     private int damage;
+    
+    public Turret(int d)
+    {
+        damage = d;
+    }
 
     public Turret(Position p, int d)
     {
