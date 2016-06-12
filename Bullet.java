@@ -7,6 +7,7 @@ public class Bullet extends Entity
     private Position pos;
     private final int speed = 4;
     private int damage;
+    private int gameState = 0;
     
     public Bullet(Enemy enemy, int d)
     {
@@ -63,13 +64,18 @@ public class Bullet extends Entity
         
     }
     
-    public boolean hasCollided()
+    public boolean hasCollided(Enemy e)
     {
-        return true;
+        if(pos.equals(e.getPosition()))
+        {
+            return true;
+        }
+        return false;
     }
     
-    public void damage()
+    public void damageEnemy(Enemy enemy)
     {
-        
+        enemy.changeHealth(damage);
+        changeGameState();
     }
 }
