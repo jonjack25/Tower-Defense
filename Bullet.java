@@ -26,7 +26,31 @@ public class Bullet extends Entity
             
     public void move()
     {
-        //moveTowardsEnemy
+        int xTarget = -1;
+        int yTarget = -1;
+        int rise = e.getPosition().getRow() - pos.getRow();        
+        int run = e.getPosition().getCol() - pos.getCol();
+        if(run == 0 && rise == 0)
+            return null;
+        if(run == 0)
+        {
+            yTarget = pos.getCol();
+            xTarget = pos.getRow() + rise / Math.abs(rise);
+        }
+        
+        else if(rise == 0)
+        {
+            xTarget = pos.getRow();
+            yTarget = pos.getCol() + run / Math.abs(run);
+        }
+        
+        else
+        {
+            yTarget = pos.getCol() + run / Math.abs(run);
+            xTarget = pos.getRow() + (int)(rise / run);
+        }
+        
+        return new Point(xTarget, yTarget);
     }
     
     public void draw(Graphics g)
