@@ -184,7 +184,19 @@ public class Game
     
     public void moveBullets()
     {
-        
+        Point temp;
+        for(Bullet b : bullets)
+        {
+            if(b.move() == null)
+                continue;
+            else
+            {
+                temp = b.move();
+                grid.setFilled(b.getPosition(), null);
+                b.setPosition(grid.getGameGrid()[(int)temp.getX()][(int)temp.getY()]);
+                grid.setFilled(grid.getGameGrid()[(int)temp.getX()][(int)temp.getY()], b);
+            }
+        }
     }
     
     public void moveEnemies()
@@ -245,10 +257,13 @@ public class Game
     {
         for(Bullet b : bullets)
         {
-            if(b.hasCollided())
+            for(Enemy e : enemies)
             {
-                b.damageEnemy();
-                b.changeGameState();
+                if(b.hasCollided(e))
+                {
+                    b.damageEnemy(e);
+                    b.changeGameState();
+                }
             }
         }
     }
