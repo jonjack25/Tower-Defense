@@ -7,9 +7,9 @@ public class BaseTurret extends Turret
     public static final int PURCHASE_COST = 400;
     private Enemy fireAt;
     
-    public BaseTurret(Position p)
+    public BaseTurret()
     {
-        super(p, 200);
+        super(200);
         reload = 1000;
         setTimer(reload);
     }
