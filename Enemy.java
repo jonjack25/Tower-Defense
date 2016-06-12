@@ -10,18 +10,26 @@ public abstract class Enemy extends Entity
     private boolean canMove = true;
     private Position pos;
     private Timer moving;
+    private int health;
+    private int killCost;
     private GamePath path;
     
     public Enemy(Position p)
     {
         pos = p;
-        moving.start();
     }
     
-    public abstract int getSpeed();
-    public abstract int getHealth();
-    public abstract int getKillCost();
     public abstract void draw(Graphics g);
+    
+    public int getHealth()
+    {
+        return health;
+    }
+    
+    public int getKillCost()
+    {
+        return killCost;
+    }
     
     public void setPosition(Position p)
     {
@@ -33,11 +41,11 @@ public abstract class Enemy extends Entity
         return pos;
     }
     
-    public GamePath getPath()
+    public path getPath()
     {
         return path;
     }
-    
+        
     public int getXCoordinate()
     {
         return pos.getXCoordinate();
@@ -48,8 +56,14 @@ public abstract class Enemy extends Entity
         return pos.getYCoordinate();
     }
     
+    public void changeHealth(int damage)
+    {
+        health -= damage;
+    }
+    
     public void setMoveTime(int speed)
     {
+        moving.start();
         moving = new Timer(speed, new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -63,7 +77,7 @@ public abstract class Enemy extends Entity
     {
         if(canMove)
         {
-            return path.getNextMove(pos);
+            return path.getNextMove();
         }
         return null;
     }
