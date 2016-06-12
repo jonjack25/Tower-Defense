@@ -17,10 +17,16 @@ public class Game
     private int typeToSpawn;
     private int randSpawnTime;
     private Timer spawn, interval;
+    
+    public static int t1Count = 0;
+    public static int t2Count = 0;
+    public static int t3Count = 0;
+    
+    private Position temp = new Position(10, 10, 10, 10, 10, 10);
 
     public Game()
     {
-        grid = new Grid(29, 50);
+        grid = new Grid();
         turrets = new ArrayList<Turret>();
         enemies = new ArrayList<Enemy>();
         bullets = new ArrayList<Bullet>();
@@ -31,32 +37,32 @@ public class Game
         typeToSpawn = (int)(Math.random() * 3);
         spawn = new Timer(randSpawnTime, new ActionListener()
         {
-                public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent e)
+            {
+                if(enemyCount > 0)
                 {
-                    if(enemyCount > 0)
-                    {
-                        if(typeToSpawn == 0)
-                            enemies.add(new BaseEnemy());
-                        else if(typeToSpawn == 1)
-                            enemies.add(new QuickEnemy());
-                        else
-                            enemies.add(new SlowEnemy());
-                        
-                        randSpawnTime = (int)(Math.random() * 2001) + 500;
-                        setDelay(randSpawnTime);
-                        typeToSpawn = (int)(Math.random() * 3);  
-                        enemyCount--;
-                    }
+                    if(typeToSpawn == 0)
+                        enemies.add(new BaseEnemy(grid.getGameGrid()[7][2]));
+                    else if(typeToSpawn == 1)
+                        enemies.add(new QuickEnemy(grid.getGameGrid()[7][2]));
+                    else
+                        enemies.add(new SlowEnemy(grid.getGameGrid()[7][2]));
+                      
+                    randSpawnTime = (int)(Math.random() * 2001) + 500;
+                    //setDelay(randSpawnTime);
+                    typeToSpawn = (int)(Math.random() * 3);  
+                    enemyCount--;
                 }
+            }
         });
         interval = new Timer(7000, new ActionListener()
         {
-                public void actionPerformed(ActionEvent e)
-                {
-                    gameState = 1;
-                    round++;
-                    scaleEnemies();
-                }
+            public void actionPerformed(ActionEvent e)
+            {
+                gameState = 1;
+                round++;
+                scaleEnemies();
+            }
         });
     }
     
@@ -109,7 +115,7 @@ public class Game
         if(coins >= StrongTurret.PURCHASE_COST)
         {
             coins -= StrongTurret.PURCHASE_COST;
-            return new StrongTurret();
+            return new StrongTurret(temp);
         }
         return null;
     }
@@ -119,7 +125,7 @@ public class Game
         if(coins >= FastTurret.PURCHASE_COST)
         {
             coins -= FastTurret.PURCHASE_COST;
-            return new FastTurret();
+            return new FastTurret(temp);
         }
         return null;
     }
@@ -129,7 +135,7 @@ public class Game
         if(coins >= BaseTurret.PURCHASE_COST)
         {
             coins -= BaseTurret.PURCHASE_COST;
-            return new BaseTurret();
+            return new BaseTurret(temp);
         }
         return null;
     }
@@ -155,7 +161,7 @@ public class Game
         if(coins >= t.getUpgradeCost())
         {
             coins -= t.getUpgradeCost();
-            t.upgrade();
+            t.upgradeDamage(10);
         }
     }
     
@@ -184,19 +190,7 @@ public class Game
     
     public void moveBullets()
     {
-        Point temp;
-        for(Bullet b : bullets)
-        {
-            if(b.move() == null)
-                continue;
-            else
-            {
-                temp = b.move();
-                grid.setFilled(b.getPosition(), null);
-                b.setPosition(grid.getGameGrid()[(int)temp.getX()][(int)temp.getY()]);
-                grid.setFilled(grid.getGameGrid()[(int)temp.getX()][(int)temp.getY()], b);
-            }
-        }
+        
     }
     
     public void moveEnemies()
@@ -213,7 +207,7 @@ public class Game
                 axis = e.getPath().getAxis();
                 xTarget = (int)temp.getX();
                 yTarget = (int)temp.getY();
-                if(grid.getGameGrid()[xTarget][yTarget].isEmpty() && grid.getGameGrid()[xTarget][yTarget].isInPath())
+                if(grid.getGameGrid()[xTarget][yTarget].isEmpty() && grid.isInPath(grid.getGameGrid()[xTarget][yTarget]))
                 {
                     grid.setFilled(e.getPosition(), null);
                     e.setPosition(grid.getGameGrid()[xTarget][yTarget]);
@@ -221,13 +215,13 @@ public class Game
                 }
                 else if(axis == 1)
                 {
-                    if(grid.getGameGrid()[xTarget + 1][yTarget].isEmpty() && grid.getGameGrid()[xTarget + 1][yTarget].isInPath())
+                    if(grid.getGameGrid()[xTarget + 1][yTarget].isEmpty() && grid.isInPath(grid.getGameGrid()[xTarget + 1][yTarget]))
                     {
                         grid.setFilled(e.getPosition(), null);
                         e.setPosition(grid.getGameGrid()[xTarget + 1][yTarget]);
                         grid.setFilled(grid.getGameGrid()[xTarget + 1][yTarget], e);
                     }
-                    else if(grid.getGameGrid()[xTarget - 1][yTarget].isEmpty() && grid.getGameGrid()[xTarget - 1][yTarget].isInPath())
+                    else if(grid.getGameGrid()[xTarget - 1][yTarget].isEmpty() && grid.isInPath(grid.getGameGrid()[xTarget - 1][yTarget]))
                     {
                         grid.setFilled(e.getPosition(), null);
                         e.setPosition(grid.getGameGrid()[xTarget - 1][yTarget]);
@@ -236,13 +230,13 @@ public class Game
                 }
                 else if(axis == -1)
                 {
-                    if(grid.getGameGrid()[xTarget][yTarget + 1].isEmpty() && grid.getGameGrid()[xTarget][yTarget + 1].isInPath())
+                    if(grid.getGameGrid()[xTarget][yTarget + 1].isEmpty() && grid.isInPath(grid.getGameGrid()[xTarget][yTarget + 1]))
                     {
                         grid.setFilled(e.getPosition(), null);
                         e.setPosition(grid.getGameGrid()[xTarget][yTarget + 1]);
                         grid.setFilled(grid.getGameGrid()[xTarget][yTarget + 1], e);
                     }
-                    else if(grid.getGameGrid()[xTarget][yTarget - 1].isEmpty() && grid.getGameGrid()[xTarget][yTarget - 1].isInPath())
+                    else if(grid.getGameGrid()[xTarget][yTarget - 1].isEmpty() && grid.isInPath(grid.getGameGrid()[xTarget][yTarget - 1]))
                     {
                         grid.setFilled(e.getPosition(), null);
                         e.setPosition(grid.getGameGrid()[xTarget][yTarget - 1]);
@@ -253,7 +247,7 @@ public class Game
         }
     }
     
-    public void collideBulletsAndEnemies()
+    public void collideEnemiesAndBullets()
     {
         for(Bullet b : bullets)
         {
@@ -290,9 +284,9 @@ public class Game
     {
         for(Enemy e : enemies)
         {
-            for(int i = b.getRow(); i < b.getRow() + b.getLength(); i++)
+            for(int i = base.getPosition().getRow(); i < base.getPosition().getRow() + base.getLength(); i++)
             {
-                for(int j = b.getCol(); j < b.getCol() + b.getWidth(); j++)
+                for(int j = base.getPosition().getCol(); j < base.getPosition().getCol() + base.getWidth(); j++)
                 {
                     if(e.getPosition().equals(grid.getGameGrid()[i][j]))
                         return true;
