@@ -2,38 +2,26 @@ import java.awt.Graphics;
 
 public class BaseEnemy extends Enemy
 {
-   private int killCost = 10;
+   private int health;
+   private int killCost;
    private final int speed;
    public static int HEALTH = 150;
-   private int health;
    
    public BaseEnemy(Position p)
    {
        super(p);
        speed = 500;
        setMoveTime(speed);
+   }
+   
+   public void setHealth()
+   {
        health = HEALTH;
-       killCost = 100;
    }
    
-   public int getHealth()
+   public void setKillCost()
    {
-       return health;
-   }
-   
-   public int getKillCost()
-   {
-       return killCost;
-   }
-   
-   public int getSpeed()
-   {
-       return speed;
-   }
-   
-   public void changeHealth(int damage)
-   {
-        health -= damage;;
+       killCost = 150;
    }
    
    public void draw(Graphics g)
