@@ -16,6 +16,7 @@ public class Game
     private int enemyCount;
     private int typeToSpawn;
     private int randSpawnTime;
+    private int spawnPosition;
     private Timer spawn, interval;
     
     public static int t1Count = 0;
@@ -35,6 +36,7 @@ public class Game
         coins = 300;
         randSpawnTime = (int)(Math.random() * 2001) + 500;
         typeToSpawn = (int)(Math.random() * 3);
+        spawnPosition = (int)(Math.random() * 4) + 3;
         spawn = new Timer(randSpawnTime, new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -42,15 +44,28 @@ public class Game
                 if(enemyCount > 0)
                 {
                     if(typeToSpawn == 0)
-                        enemies.add(new BaseEnemy(grid.getGameGrid()[7][2]));
+                    {
+                        Enemy e = new BaseEnemy(grid.getGameGrid()[spawnPosition][0])
+                        enemies.add(e);
+                        grid.setFilled(grid.getGameGrid()[spawnPosition][0], e);
+                    }
                     else if(typeToSpawn == 1)
-                        enemies.add(new QuickEnemy(grid.getGameGrid()[7][2]));
+                    {
+                        Enemy e = new QuickEnemy(grid.getGameGrid()[spawnPosition][0])
+                        enemies.add(e);
+                        grid.setFilled(grid.getGameGrid()[spawnPosition][0], e);
+                    }
                     else
-                        enemies.add(new SlowEnemy(grid.getGameGrid()[7][2]));
+                    {
+                        Enemy e = new SlowEnemy(grid.getGameGrid()[spawnPosition][0])
+                        enemies.add(e);
+                        grid.setFilled(grid.getGameGrid()[spawnPosition][0], e);
+                    }
                       
                     randSpawnTime = (int)(Math.random() * 2001) + 500;
                     //setDelay(randSpawnTime);
-                    typeToSpawn = (int)(Math.random() * 3);  
+                    typeToSpawn = (int)(Math.random() * 3);
+                    spawnPosition = (int)(Math.random() * 4) + 3;
                     enemyCount--;
                 }
             }
@@ -115,7 +130,7 @@ public class Game
         if(coins >= StrongTurret.PURCHASE_COST)
         {
             coins -= StrongTurret.PURCHASE_COST;
-            return new StrongTurret(temp);
+            return new StrongTurret();
         }
         return null;
     }
@@ -125,7 +140,7 @@ public class Game
         if(coins >= FastTurret.PURCHASE_COST)
         {
             coins -= FastTurret.PURCHASE_COST;
-            return new FastTurret(temp);
+            return new FastTurret();
         }
         return null;
     }
@@ -135,7 +150,7 @@ public class Game
         if(coins >= BaseTurret.PURCHASE_COST)
         {
             coins -= BaseTurret.PURCHASE_COST;
-            return new BaseTurret(temp);
+            return new BaseTurret();
         }
         return null;
     }
