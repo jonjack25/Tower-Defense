@@ -96,9 +96,14 @@ public class GamePath
         return new Point(xTarget, yTarget);
     }
     
+    public int getAxis()
+    {
+        return axis[axisPosition];
+    }
+    
     public int getDirection()
     {
-        return -1;
+        return directions[dirPosition];
     }
     
     public int oscillate(int p)
