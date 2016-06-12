@@ -1,5 +1,6 @@
 import java.awt.Graphics;
-import java.util.*;
+import java.util.List;
+import java.awt.Point;
 import javax.swing.Timer;
 import java.util.TimerTask;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ public abstract class Turret extends Entity
     private Timer reload;
     private Bullet b;
     private Enemy fireAt;
+    public int upgradeCost = 50;
     private int damage;
 
     public Turret(Position p, int d)
@@ -25,19 +27,14 @@ public abstract class Turret extends Entity
     public abstract int getReloadSpeed();
     public abstract void draw(Graphics g);
     
-    public void setPosition(Position p)
-    {
-        pos = p;
-    }
-    
     public int getDamage()
     {
         return damage;
     }
     
-    public void upgradeDamage(int upgrade)
+    public void setPosition(Position p)
     {
-        damage += upgrade;
+        pos = p;
     }
     
     public Position getPosition()
@@ -48,6 +45,12 @@ public abstract class Turret extends Entity
     public int getRadius()
     {
         return radius;
+    }
+    
+    public void upgradeDamage(int upgrade)
+    {
+        damage += upgrade;
+        upgrade = (int)(upgrade * 1.5);
     }
     
     public void setTimer(int speed)
