@@ -88,12 +88,21 @@ public class Game
     {
         if(gameState == 0)
         {
-            interval.start();
+            if(!first)
+            {
+               interval.start();
+               first = !first;
+            }
             spawn.stop();
         }
         else if(gameState == 1)
         {
-            spawn.start();
+            spawn.setDelay(randSpawnTimer);
+            if(first)
+            {
+                spawn.start();
+                first = !first;
+            }
             interval.stop();
             fireTurrets();
             moveEnemies();
