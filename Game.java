@@ -22,8 +22,6 @@ public class Game
     public static int t1Count = 0;
     public static int t2Count = 0;
     public static int t3Count = 0;
-    
-    private Position temp = new Position(10, 10, 10, 10, 10, 10);
 
     public Game()
     {
