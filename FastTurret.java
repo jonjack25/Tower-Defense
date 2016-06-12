@@ -14,6 +14,13 @@ public class FastTurret extends Turret
         setTimer(reload);
     }
     
+    public FastTurret(Position p)
+    {
+        super(p, 75);
+        reload = 250;
+        setTImer(reload);
+    }
+    
     public int getReloadSpeed()
     {
         return reload;
