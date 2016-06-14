@@ -17,6 +17,7 @@ public class Game
     private int typeToSpawn;
     private int randSpawnTime;
     private int spawnPosition;
+    private int previousSpawn;
     private boolean first = true;
     private boolean next = true;
     private Timer spawn, interval;
@@ -27,13 +28,15 @@ public class Game
         turrets = new ArrayList<Turret>();
         enemies = new ArrayList<Enemy>();
         bullets = new ArrayList<Bullet>();
-        base = new Base(grid.getGameGrid()[22][45], 4, 4);
+        base = new Base(grid.getGameGrid()[22][45], 4, 5);
         gameState = 1;
-        enemyCount = 5;
+        enemyCount = 2;
+        round = 1;
         coins = 300;
         randSpawnTime = (int)(Math.random() * 2001) + 500;
         typeToSpawn = (int)(Math.random() * 3);
         spawnPosition = (int)(Math.random() * 4) + 3;
+        previousSpawn = spawnPosition;
         
         spawn = new Timer(randSpawnTime, new ActionListener()
         {
@@ -41,6 +44,11 @@ public class Game
             {
                 if(enemyCount > 0)
                 {
+                    //System.out.println(enemyCount);
+                    while(spawnPosition == previousSpawn)
+                    {
+                        spawnPosition = (int)(Math.random() * 4) + 3;
+                    }
                     if(typeToSpawn == 0)
                     {
                         Enemy en = new BaseEnemy(grid.getGameGrid()[spawnPosition][0]);
@@ -64,26 +72,29 @@ public class Game
                     //setDelay(randSpawnTime);
                     next = true;
                     typeToSpawn = (int)(Math.random() * 3);
+                    previousSpawn = spawnPosition;
                     spawnPosition = (int)(Math.random() * 4) + 3;
                     enemyCount--;
                     //System.out.println(enemies.size());
                 }
             }
         });
-        spawn.setInitialDelay(0);
-        spawn.start();
         interval = new Timer(3000, new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                 gameState = 1;
-                round++;
-                scaleEnemies();
-                System.out.print("here");
+                if(enemyCount == 0)
+                {
+                    round++;
+                    scaleEnemies();
+                }
             }
         });
+        spawn.setInitialDelay(0);
+        spawn.start();
         
-        turrets.add(new FastTurret(grid.getGameGrid()[9][12]));
+        turrets.add(new StrongTurret(grid.getGameGrid()[9][12]));
     }
     
     public Grid getGrid()
@@ -140,6 +151,7 @@ public class Game
             e.draw(g);
         for(Bullet b : bullets)
             b.draw(g);
+        base.draw(g);
     }
     
     public Turret purchaseStrongTurret()
@@ -213,7 +225,7 @@ public class Game
     
     public void scaleEnemies()
     {
-        enemyCount = 1 * round;
+        enemyCount = 2 * round;
         QuickEnemy.HEALTH += 5;
         BaseEnemy.HEALTH += 10;
         SlowEnemy.HEALTH += 15;
@@ -256,7 +268,7 @@ public class Game
         {
             temp = e.move();
             if(temp == null)
-                return;
+                continue;
             else
             {
                 axis = e.getPath().getAxis();
@@ -300,10 +312,6 @@ public class Game
                 }
             }
         }
-//         for(Enemy e : enemies)
-//         {
-//             System.out.println(e.getPosition().getRow() + ", " + e.getPosition().getCol());
-//         }
     }
     
     public void collideEnemiesAndBullets()
