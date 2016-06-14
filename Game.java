@@ -93,21 +93,31 @@ public class Game
     
     public void updateGame()
     {
-        
-        if(gameState == 1)
+        if(gameState == 0)
         {
-//             if(next == true)
-//             {
-//                 spawn.setDelay(randSpawnTime);
-//                 next = false;
-//             }
+            if(first == true)
+            {
+                interval.start();
+                first = false;
+            }
+        }
+        else if(gameState == 1)
+        {
+            if(first == false)
+            {
+                first = true;
+                interval.stop();
+                spawn.start();
+            }
             fireTurrets();
             moveEnemies();
             moveBullets();
             collideEnemiesAndBullets();
             removeEntities();
-            //if(enemies.size() == 0)
-            //gameState = 0;
+            if(enemies.size() == 0)
+            {
+                gameState = 0;
+            }
             if(baseHasBeenBreached())
             {
                 gameState = 2;
