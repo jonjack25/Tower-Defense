@@ -121,4 +121,9 @@ public class Turret extends Entity
         }
         return null;
     }
+    
+    public void rotate(Enemy e)
+    {
+        double angle = Math.toDegrees(Math.atan2(e.getYCoordinate() - pos.getYCoordinate(), e.getXCoordinate() - pos.getXCoordinate()));
+    }
 }
