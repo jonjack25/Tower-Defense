@@ -79,6 +79,11 @@ public class Turret extends Entity
         upgrade = u;
     }
     
+    public int getUpgrade()
+    {
+        return upgrade;
+    }
+    
     public void setPosition(Position p)
     {
         pos = p;
