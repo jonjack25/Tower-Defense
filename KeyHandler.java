@@ -70,9 +70,10 @@ public class KeyHandler implements MouseMotionListener, MouseListener
                 }
                 else
                 {
-                    game.cancelPurchase(t);
+                    game.cancelBasePurchase();
                     basicTurretStatus = 0;
                     btnStatus = 0;
+                    t = null;
                 }
             }
             else if(strongTurretStatus == 1)
@@ -85,9 +86,10 @@ public class KeyHandler implements MouseMotionListener, MouseListener
                 }
                 else
                 {
-                    game.cancelPurchase(t);
-                    basicTurretStatus = 0;
+                    game.cancelStrongPurchase();
+                    strongTurretStatus = 0;
                     btnStatus = 0;
+                    t = null;
                 }
             }
             else if(fastTurretStatus == 1)
@@ -100,12 +102,13 @@ public class KeyHandler implements MouseMotionListener, MouseListener
                 }
                 else
                 {
-                    game.cancelPurchase(t);
-                    basicTurretStatus = 0;
+                    game.cancelFastPurchase();
+                    fastTurretStatus = 0;
                     btnStatus = 0;
+                    t = null;
                 }
             }
-            if(btnStatus == 0)
+            else if(btnStatus == 0)
             {
                 if(tb.mouseBtn1())
                 {
@@ -134,10 +137,10 @@ public class KeyHandler implements MouseMotionListener, MouseListener
                         btnStatus = 1;
                     }
                 }
-                //else if(game.findTurret(game.getGrid().getPosition(screen.getMousePoint())) != null)
-                //{
-                //    game.upgradeTurret(game.findTurret(game.getGrid().getPosition(screen.getMousePoint())));
-                //}
+                else if(game.findTurret(game.getGrid().getPosition(screen.getMousePoint())) != null)
+                {
+                   game.upgradeTurret(game.findTurret(game.getGrid().getPosition(screen.getMousePoint())));
+                }
             }
         }
     }
