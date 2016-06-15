@@ -40,7 +40,23 @@ public class Turret extends Entity
     {
         Graphics2D g2d = (Graphics2D)g.create();
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        //g2d.rotate(Math.toRadians(getAngle()));
+        //fireAt = null;
         g2d.drawImage(image, getPosition().getXCoordinate() - (int)getPosition().getWidth() * 2, getPosition().getYCoordinate() - (int)getPosition().getWidth() * 2, (int)getPosition().getWidth() * 3, (int)getPosition().getHeight() * 3, null);
+    }
+    
+    private double getAngle()
+    {
+        if(fireAt == null)
+            return 0;
+        else
+        {
+            double x1 = pos.getXCoordinate() - pos.getWidth() / 2, 
+                   y1 = pos.getYCoordinate() - pos.getWidth() / 2;
+            double x2 = fireAt.getPosition().getXCoordinate() + fireAt.getPosition().getWidth() / 2,
+                   y2 = fireAt.getPosition().getYCoordinate() + fireAt.getPosition().getWidth() / 2;
+            return Math.atan2(y2 - y1, x2 - x1);
+        }
     }
     
     public void setImage(Image i)
@@ -109,9 +125,10 @@ public class Turret extends Entity
         {
             for(int i = 0; i < e.size(); i++)
             {
-                distance = Math.sqrt(Math.pow(e.get(i).getXCoordinate() - pos.getXCoordinate(), 2) + Math.pow(e.get(i).getYCoordinate() - pos.getYCoordinate(), 2));        
+                distance = Math.sqrt(Math.pow(e.get(i).getXCoord() - pos.getXCoordinate(), 2) + Math.pow(e.get(i).getYCoord() - pos.getYCoordinate(), 2));        
                 if(radius >= distance)
                 {
+                    fireAt = e.get(i);
                     Bullet b = new Bullet(e.get(i), damage);
                     canFire = false;
                     reload.restart();
