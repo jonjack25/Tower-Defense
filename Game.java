@@ -200,14 +200,19 @@ public class Game
         return null;
     }
     
-    public void cancelPurchase(Turret t)
+    public void cancelBasePurchase()
     {
-        if(t instanceof StrongTurret)
-            coins += StrongTurret.PURCHASE_COST;
-        else if(t instanceof FastTurret)
-            coins += FastTurret.PURCHASE_COST;
-        else if(t instanceof BaseTurret)
-            coins += BaseTurret.PURCHASE_COST;
+        coins += BaseTurret.PURCHASE_COST;
+    }
+    
+    public void cancelFastPurchase()
+    {
+        coins += FastTurret.PURCHASE_COST;
+    }
+    
+    public void cancelStrongPurchase()
+    {
+        coins += StrongTurret.PURCHASE_COST;
     }
     
     public void placeTurret(Turret t, Position p)
@@ -232,6 +237,7 @@ public class Game
             coins -= t.getUpgradeCost();
             t.upgradeDamage();
         }
+        //System.out.println(coins);
     }
     
     public void getKillCoins(Enemy e)
@@ -271,15 +277,33 @@ public class Game
     public void moveEnemies()
     {
         Point temp;
-        int axis, xTarget, yTarget;
+        
+        int axis, dir, xTarget, yTarget;
         for(Enemy e : enemies)
         {
             temp = e.move();
-            if(temp == null)
+            if(e.getPath().getTurn() == true)
                 continue;
+            axis = e.getPath().getAxis();
+            dir = e.getPath().getDirection();
+            if(temp == null)
+            {
+//                 Position p;
+//                 if(axis == 1 && dir == 1)
+//                     temp = new Point(e.getXCoord() + 1, e.getYCoord());
+//                 else if(axis == 1 && dir == -1)
+//                     temp = new Point(e.getXCoord(), e.getYCoord() + 1);
+//                 else if(axis == -1 && dir == 1)
+//                     temp = new Point(e.getXCoord(), e.getYCoord() + 1);
+//                 else if(axis == -1 && dir == -1)
+//                     temp = new Point(e.getXCoord() -1, e.getYCoord());
+//                 p = grid.getPosition(temp);
+//                 if(p == e.getPosition())
+//                     e.setCoordinates(temp);
+                 continue;
+            }
             else
             {
-                axis = e.getPath().getAxis();
                 xTarget = (int)temp.getX();
                 yTarget = (int)temp.getY();
                 if(grid.getGameGrid()[xTarget][yTarget].isEmpty() && grid.isInPath(grid.getGameGrid()[xTarget][yTarget]))
@@ -341,7 +365,7 @@ public class Game
     {
         for(int i = bullets.size() - 1; i >= 0; i--)
         {
-            if(bullets.get(i).getGameState() == 1)
+            if(bullets.get(i).getGameState() == 1 || bullets.get(i).getEnemy().getPosition().getType() == 0)
             {
                 bullets.remove(i);
             }
