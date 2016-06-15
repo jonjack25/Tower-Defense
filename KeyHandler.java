@@ -1,4 +1,3 @@
-
 import java.awt.event.*;
 import java.awt.*;
 
@@ -61,46 +60,48 @@ public class KeyHandler implements MouseMotionListener, MouseListener
         }
         else
         {
-            //Turret t = game.purchaseBaseTurret();
             if(basicTurretStatus == 1)
-            {                
-                if(t == null)
-                {
-                    btnStatus = 0;
-                    basicTurretStatus = 0;
-                }
+            {
                 if(game.getGrid().isValidPosition(game.getGrid().getPosition(screen.key.getMouse())))
                 {
                     game.placeTurret(t, game.getGrid().getPosition(mouse));
                     basicTurretStatus = 0;
                     btnStatus = 0;
                 }
+                else
+                {
+                    game.cancelPurchase(t);
+                    basicTurretStatus = 0;
+                    btnStatus = 0;
+                }
             }
             else if(strongTurretStatus == 1)
             {
-                if(t == null)
-                {
-                    btnStatus = 0;
-                    strongTurretStatus = 0;
-                }
                 if(game.getGrid().isValidPosition(game.getGrid().getPosition(screen.getMousePoint())))
                 {
                     game.placeTurret(t, game.getGrid().getPosition(mouse));
                     strongTurretStatus = 0;
+                    btnStatus = 0;
+                }
+                else
+                {
+                    game.cancelPurchase(t);
+                    basicTurretStatus = 0;
                     btnStatus = 0;
                 }
             }
             else if(fastTurretStatus == 1)
             {
-                if(t == null)
-                {
-                    btnStatus = 0;
-                    fastTurretStatus = 0;
-                }
                 if(game.getGrid().isValidPosition(game.getGrid().getPosition(screen.getMousePoint())))
                 {
                     game.placeTurret(t, game.getGrid().getPosition(mouse));
                     fastTurretStatus = 0;
+                    btnStatus = 0;
+                }
+                else
+                {
+                    game.cancelPurchase(t);
+                    basicTurretStatus = 0;
                     btnStatus = 0;
                 }
             }
@@ -109,35 +110,36 @@ public class KeyHandler implements MouseMotionListener, MouseListener
                 if(tb.mouseBtn1())
                 {
                     t = game.purchaseBaseTurret();
-                    basicTurretStatus = 1;
-                    btnStatus = 1;
+                    if(t != null)
+                    {
+                        basicTurretStatus = 1;
+                        btnStatus = 1;
+                    }
                 }
                 else if(tb.mouseBtn2())
                 {
                     t = game.purchaseStrongTurret();
-                    strongTurretStatus = 1;
-                    btnStatus = 1;
+                    if(t != null)
+                    {
+                        strongTurretStatus = 1;
+                        btnStatus = 1;
+                    }
                 }
                 else if(tb.mouseBtn3())
                 {
                     t = game.purchaseFastTurret();
-                    fastTurretStatus = 1;
-                    btnStatus = 1;
+                    if(t != null)
+                    {
+                        fastTurretStatus = 1;
+                        btnStatus = 1;
+                    }
                 }
+                //else if(game.findTurret(game.getGrid().getPosition(screen.getMousePoint())) != null)
+                //{
+                //    game.upgradeTurret(game.findTurret(game.getGrid().getPosition(screen.getMousePoint())));
+                //}
             }
         }
-        /*
-        else if(!GameScreen.menu && (TurretBar.btnArray[0].contains(GameScreen.mouse) || TurretBar.btnArray[1].contains(GameScreen.mouse) || TurretBar.btnArray[2].contains(GameScreen.mouse)))
-        {
-            if(btnStatus == 0)
-                btnStatus = 1;
-            else
-                btnStatus = 0;
-        }
-        
-        */
-        //TurretBar.clicked();
-        
     }
     
     public void mouseDragged(MouseEvent arg0)
