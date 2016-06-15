@@ -35,9 +35,9 @@ public class MainMenu
     public void define()
     {
         menuOptions = new Rectangle[3];
-        menuOptions[0] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 200, width, height);
-        menuOptions[1] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 350, width, height);
-        menuOptions[2] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 500, width, height);
+        menuOptions[0] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 225, width, height);
+        menuOptions[1] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 375, width, height);
+        menuOptions[2] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 525, width, height);
         //setVisible(true);
     }
     
@@ -46,6 +46,12 @@ public class MainMenu
         if(screen.getMenu())
         {
             g.setColor(new Color(0, 0, 0));
+            screen.getGame().draw(g);
+            screen.getFrame().setBackground(Color.BLACK);
+            g.setColor(new Color(255, 255, 255));
+            g.drawRect(0, 29 * 20, 1024, 768 - 29 * 20);
+            g.fillRect(0, 29 * 20, 1024, 768 - 29 * 20);
+            g.setColor(new Color(0, 0, 0));
             for(int i = 0; i < menuOptions.length; i++)
             {
                 g.drawRect(menuOptions[i].x, menuOptions[i].y, menuOptions[i].width, menuOptions[i].height);
@@ -53,9 +59,9 @@ public class MainMenu
             }
             g.setColor(new Color(255, 255, 255));
             g.setFont(new Font("Serif", Font.PLAIN, 40));
-            g.drawString("Play", frame.getWidth() / 2 - 30, 150 + height );
-            g.drawString("Options", frame.getWidth() / 2 - 60, 300 + height);
-            g.drawString("Exit", frame.getWidth() / 2 - 30, 450 + height);
+            g.drawString("Play", frame.getWidth() / 2 - 30, 175 + height );
+            g.drawString("Options", frame.getWidth() / 2 - 60, 325 + height);
+            g.drawString("Exit", frame.getWidth() / 2 - 30, 475 + height);
         }
     }
     

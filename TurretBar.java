@@ -45,7 +45,26 @@ public class TurretBar
             {
                 g.setColor(new Color(0, 0, 0, 100));
                 g.fillRect(btnArray[i].x, btnArray[i].y, btnArray[i].width, btnArray[i].height);
-                
+                g.setColor(new Color(0, 0, 0));
+                g.setFont(new Font("Serif", Font.PLAIN, 30));
+                if(i == 0)
+                {
+                    g.drawString("Basic Turret", frame.getWidth() / 2 - 50, btnStartY + 40 + 5);
+                    g.drawString("Cost: " + BaseTurret.PURCHASE_COST, frame.getWidth() / 2 - 50, btnStartY + 70 + 5);
+                    g.drawString("Damage: " + BaseTurret.DAMAGE, frame.getWidth() / 2 - 50, btnStartY + 100 + 5);
+                }
+                else if(i == 1)
+                {
+                    g.drawString("Strong Turret", frame.getWidth() / 2 - 50, btnStartY + 40 + 5);
+                    g.drawString("Cost: " + StrongTurret.PURCHASE_COST, frame.getWidth() / 2 - 50, btnStartY + 70 + 5);
+                    g.drawString("Damage: " + StrongTurret.DAMAGE, frame.getWidth() / 2 - 50, btnStartY + 100 + 5);
+                }
+                else if(i == 2)
+                {
+                    g.drawString("Fast Turret", frame.getWidth() / 2 - 50, btnStartY + 40 + 5);
+                    g.drawString("Cost: " + FastTurret.PURCHASE_COST, frame.getWidth() / 2 - 50, btnStartY + 70 + 5);
+                    g.drawString("Damage: " + FastTurret.DAMAGE, frame.getWidth() / 2 - 50, btnStartY + 100 + 5);
+                }
             }
             if(i == 0)
             {
@@ -65,8 +84,11 @@ public class TurretBar
                 g.drawImage(fast, btnStartX + (btnSizeX + space) * i,
                 (btnStartY + (frame.getFrameHeight() - screen.getMyHeight()) / 2), btnSizeX, btnSizeY, null);
             }
-                
         }
+        g.setColor(new Color(0, 0, 0));
+        g.setFont(new Font("Serif", Font.PLAIN, 30));
+        g.drawString("Round: " + screen.getGame().getRound(), 30, btnStartY + 60);
+        g.drawString("Coins: " + screen.getGame().getCoins(), 30, btnStartY + 90);
     }
     
     public void clicked()
