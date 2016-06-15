@@ -15,10 +15,9 @@ import javax.swing.*;
 public class StrongTurret extends Turret
 {
     private final int RELOAD = 4000;
-    private final int DAMAGE = 500;
+    public static final int DAMAGE = 500;
     private final int UPGRADE = 30;
     public static final int PURCHASE_COST = 500;
-    private Enemy fireAt;
     private final Image STRONG = new ImageIcon("circleTurretBlue.png").getImage();
     
     public StrongTurret()
