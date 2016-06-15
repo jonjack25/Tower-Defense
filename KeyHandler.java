@@ -4,13 +4,13 @@ import java.awt.*;
 public class KeyHandler implements MouseMotionListener, MouseListener
 {
     private int btnStatus = 0; //0 = not clicked, 1 = clicked
-    private int basicTurretStatus = 0, strongTurretStatus = 0, fastTurretStatus = 0; //0 when not active, 1 when active (user is placing)
+    private int basicTurretStatus = 0, strongTurretStatus = 0, fastTurretStatus = 0, hoverStatus = 0; //0 when not active, 1 when active (user is placing)
     private GameFrame frame;
     private Game game;
     private GameScreen screen;
     private TurretBar tb;
     private Point mouse = new Point(0,0);
-    private Turret t = null;
+    private Turret t = null, hoverTurret = null;
     
     public KeyHandler(GameFrame f, Game g, GameScreen gs)
     {
@@ -147,14 +147,28 @@ public class KeyHandler implements MouseMotionListener, MouseListener
     
     public void mouseDragged(MouseEvent arg0)
     {
+        hoverTurret = null;
+        hoverStatus = 0;
         mouse = new Point(arg0.getX() + (frame.getFrameWidth() - screen.getMyWidth()) / 2, arg0.getY() + (frame.getFrameHeight() - screen.getMyHeight()) / 2 - 50);        
         screen.setMousePoint(mouse);
+        if(screen.getGame().findTurret(screen.getGame().getGrid().getPosition(mouse)) != null)
+        {
+            hoverTurret = screen.getGame().findTurret(screen.getGame().getGrid().getPosition(mouse));
+            hoverStatus = 1;
+        }
     }
     
     public void mouseMoved(MouseEvent arg0)
     {
+        hoverTurret = null;
+        hoverStatus = 0;
         mouse = new Point(arg0.getX() + (frame.getFrameWidth() - screen.getMyWidth()) / 2, arg0.getY() + (frame.getFrameHeight() - screen.getMyHeight()) / 2 - 50);
         screen.setMousePoint(mouse);
+        if(screen.getGame().findTurret(screen.getGame().getGrid().getPosition(mouse)) != null)
+        {
+            hoverTurret = screen.getGame().findTurret(screen.getGame().getGrid().getPosition(mouse));
+            hoverStatus = 1;
+        }
     }
     
     public int returnStatus()
@@ -175,6 +189,16 @@ public class KeyHandler implements MouseMotionListener, MouseListener
     public int strongTurretStatus()
     {
         return strongTurretStatus;
+    }
+    
+    public int hoverStatus()
+    {
+        return hoverStatus;
+    }
+    
+    public Turret getHover()
+    {
+        return hoverTurret;
     }
     
     public Point getMouse()
