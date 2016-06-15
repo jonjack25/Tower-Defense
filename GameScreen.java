@@ -154,5 +154,10 @@ public class GameScreen extends JPanel implements Runnable
     {
         return mainMenu;        
     }
+    
+    public Game getGame()
+    {
+        return game;        
+    }
        
 }
