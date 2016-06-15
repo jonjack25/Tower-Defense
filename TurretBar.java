@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 public class TurretBar 
@@ -18,7 +17,7 @@ public class TurretBar
         frame = screen.getFrame();
         btnArray = new Rectangle[turretStoreSize];
         basic = new ImageIcon("circleTurretRed.png").getImage();
-        strong = new ImageIcon("circleTurretBlue3.png").getImage();
+        strong = new ImageIcon("circleTurretBlue.png").getImage();
         fast = new ImageIcon("circleTurretGreen.png").getImage();
         for(int i = 0; i < btnArray.length; i++)
         {
@@ -85,6 +84,15 @@ public class TurretBar
                 (btnStartY + (frame.getFrameHeight() - screen.getMyHeight()) / 2), btnSizeX, btnSizeY, null);
             }
         }
+        if(screen.key.hoverStatus() == 1)
+        {
+            g.setColor(new Color(156, 176, 56));
+            g.setFont(new Font("Serif", Font.PLAIN, 30));
+                
+            g.drawString("Damage: " + screen.key.getHover().getDamage(), frame.getWidth() / 2 - 80, btnStartY + 40 + 5);
+            g.drawString("Upgrade: " + screen.key.getHover().getUpgrade(), frame.getWidth() / 2 - 80, btnStartY + 70 + 5);
+            g.drawString("Upgrade Cost: " + screen.key.getHover().getUpgradeCost(), frame.getWidth() / 2 - 80, btnStartY + 100 + 5);
+        }
         g.setColor(new Color(0, 0, 0));
         g.setFont(new Font("Serif", Font.PLAIN, 30));
         g.drawString("Round: " + screen.getGame().getRound(), 30, btnStartY + 60);
@@ -124,5 +132,3 @@ public class TurretBar
         return btnArray[2].contains(screen.getMousePoint());
     }
 }
-    
-  
