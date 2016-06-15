@@ -32,7 +32,7 @@ public class Game
         gameState = 1;
         enemyCount = 2;
         round = 1;
-        coins = 300;
+        coins = 7000;
         randSpawnTime = (int)(Math.random() * 2001) + 500;
         typeToSpawn = (int)(Math.random() * 3);
         spawnPosition = (int)(Math.random() * 4) + 3;
@@ -93,8 +93,6 @@ public class Game
         });
         spawn.setInitialDelay(0);
         spawn.start();
-        
-        turrets.add(new StrongTurret(grid.getGameGrid()[9][12]));
     }
     
     public Grid getGrid()
@@ -152,6 +150,24 @@ public class Game
         for(Bullet b : bullets)
             b.draw(g);
         base.draw(g);
+    }
+    
+    public Turret findTurret(Position p)
+    {
+        for(Turret t : turrets)
+        {
+            int i = t.getPosition().getRow();
+            int j = t.getPosition().getCol();
+            for(int a = i; a > i - 3; a--)
+            {
+                for(int b = j; b > j - 3; b--)
+                {
+                    if(p.getRow() == a && p.getCol() == b)
+                        return t;
+                }
+            }
+        }
+        return null;
     }
     
     public Turret purchaseStrongTurret()
@@ -246,17 +262,9 @@ public class Game
     
     public void moveBullets()
     {
-        Position temp;
         for(Bullet b : bullets)
         {
-            temp = b.move();
-            if(temp == null)
-                continue;
-            else
-            {
-                b.setPosition(temp);
-                grid.setFilled(temp, b);
-            }
+            b.move();
         }
     }
     
