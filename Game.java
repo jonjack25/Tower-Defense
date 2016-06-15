@@ -32,7 +32,7 @@ public class Game
         gameState = 1;
         enemyCount = 2;
         round = 1;
-        coins = 7000;
+        coins = 300;
         randSpawnTime = (int)(Math.random() * 2001) + 500;
         typeToSpawn = (int)(Math.random() * 3);
         spawnPosition = (int)(Math.random() * 4) + 3;
@@ -154,6 +154,8 @@ public class Game
     
     public Turret findTurret(Position p)
     {
+        if(p == null)
+            return null;
         for(Turret t : turrets)
         {
             int i = t.getPosition().getRow();
@@ -168,6 +170,16 @@ public class Game
             }
         }
         return null;
+    }
+    
+    public int getCoins()
+    {
+        return coins;
+    }
+    
+    public int getRound()
+    {
+        return round;
     }
     
     public Turret purchaseStrongTurret()
@@ -248,9 +260,9 @@ public class Game
     public void scaleEnemies()
     {
         enemyCount = 2 * round;
-        QuickEnemy.HEALTH += 5;
-        BaseEnemy.HEALTH += 10;
-        SlowEnemy.HEALTH += 15;
+        QuickEnemy.HEALTH += 20;
+        BaseEnemy.HEALTH += 30;
+        SlowEnemy.HEALTH += 40;
     }
     
     public void fireTurrets()
