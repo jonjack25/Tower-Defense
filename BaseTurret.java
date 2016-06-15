@@ -14,10 +14,9 @@ import javax.swing.*;
 public class BaseTurret extends Turret
 {
     private final int RELOAD = 2000;
-    private final int DAMAGE = 250;
+    public static final int DAMAGE = 250;
     private final int UPGRADE = 20;
     public static final int PURCHASE_COST = 200;
-    private Enemy fireAt;
     private final Image BASE = new ImageIcon("circleTurretRed.png").getImage();
     
     public BaseTurret()
