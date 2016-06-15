@@ -15,10 +15,9 @@ import javax.swing.*;
 public class FastTurret extends Turret
 {
     private final int RELOAD = 1000;
-    private final int DAMAGE = 100;
+    public static final int DAMAGE = 100;
     private final int UPGRADE = 10;
     public static final int PURCHASE_COST = 300;
-    private Enemy fireAt;
     private final Image FAST = new ImageIcon("circleTurretGreen.png").getImage();
     
     public FastTurret()
