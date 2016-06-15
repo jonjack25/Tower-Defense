@@ -11,13 +11,13 @@ public class Bullet extends Entity
     private int gameState = 0;
     private final int PIXELS = 4;
     private Position pos;
-    Image bullet;
+    private Image bullet;
     
     public Bullet(Enemy enemy, int d)
     {
         e = enemy;
         damage = d;
-        bullet = new ImageIcon("newBullet.png").getImage();
+        bullet = new ImageIcon("newBullet.jpg").getImage();
     }
     
     public void changeGameState()
@@ -28,6 +28,11 @@ public class Bullet extends Entity
     public int getGameState()
     {
         return gameState;
+    }
+    
+    public Enemy getEnemy()
+    {
+        return e;
     }
     
     public void setPosition(Position p)
@@ -58,8 +63,8 @@ public class Bullet extends Entity
  
     public void move()
     {
-        int slopeX = (int)(e.getXCoordinate() - p.getX());
-        int slopeY = (int)(e.getYCoordinate() - p.getY());
+        int slopeX = (int)(e.getXCoord() - p.getX());
+        int slopeY = (int)(e.getYCoord() - p.getY());
  
         if(slopeX > 0)
         {
@@ -91,7 +96,7 @@ public class Bullet extends Entity
     {
         if(p.getX() == e.getXCoordinate() && p.getY() == (e.getYCoordinate()))
         {
-            return true;
+           return true;
         }
         return false;
     }
