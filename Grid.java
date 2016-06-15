@@ -3,6 +3,7 @@ import java.awt.*;
 import java.util.ArrayList;
 public class Grid
 {
+    public static int POSITION_SIZE = 20;
     private int worldWidth = 50;
     private int worldHeight = 29;
     private int positionSize = 20;
@@ -64,8 +65,14 @@ public class Grid
     
     public Position getPosition(Point p)
     {
-        if((int)p.getX() / positionSize < 29 && (int)p.getY() / positionSize < 50)
-            return grid[(int)p.getX() / positionSize][(int)p.getY() / positionSize];
+        for(Position[] pos : grid)
+        {
+            for(Position po : pos)
+            {
+                if(po.contains(p))
+                    return po;
+            }
+        }
         return null;
     }
     
@@ -108,15 +115,6 @@ public class Grid
                }
            }
        }
-       /*
-       for(int i = x; i > x - 3; i--)
-       {
-           for(int j = y; j > x - 3; j--)
-           {
-               grid[i][j].setHover(true);
-           }
-       }
-       */
        return true;
     }
     
@@ -153,8 +151,6 @@ public class Grid
             for(int j = 0; j < grid[0].length; j++)
             {
                 grid[i][j].setHover(false);
-                tempX = i;
-                tempY = j;
                 if(path[i][j] == 0)
                 {
                     grid[i][j].setGround(0);                    
@@ -166,68 +162,30 @@ public class Grid
                 if(screen.key.returnStatus() == 1 && grid[i][j].contains(screen.getMousePoint()) && first)
                 {
                     first = false;
-                    grid[i][j].setHover(true);
-                    if(i == 0 || j == 0 || i == 1 || j == 1 || path[i][j] == 1 || path[i - 1][j - 1] == 1 || path[i][j - 1] == 1 || path[i - 1][j] == 1 
-                       || path[i - 2][j] == 1 || path[i - 2][j - 1] == 1 || path[i - 2][j - 2] == 1 || path[i][j - 2] == 1 || path[i - 1][j - 2] == 1)
+                    if(i != 0 && j != 0 && i != 1 && j != 1 && isValidPosition(grid[i][j]))
                     {
-                        grid[i][j].setHoverValid(false);
-                        grid[tempX][tempY - 1].setHover(true);
-                        grid[tempX][tempY - 1].setHoverValid(false);
-                        
-                        grid[tempX][tempY - 2].setHover(true);
-                        grid[tempX][tempY - 2].setHoverValid(false);
-                        
-                        grid[tempX - 1][tempY].setHover(true);
-                        grid[tempX - 1][tempY].setHoverValid(false);
-                        
-                        grid[tempX - 1][tempY - 1].setHover(true);
-                        grid[tempX - 1][tempY - 1].setHoverValid(false);
-                        
-                        grid[tempX - 1][tempY - 2].setHover(true);
-                        grid[tempX - 1][tempY - 2].setHoverValid(false);
-                        
-                        grid[tempX - 2][tempY].setHover(true);
-                        grid[tempX - 2][tempY].setHoverValid(false);
-                        
-                        grid[tempX - 2][tempY - 1].setHover(true);
-                        grid[tempX - 2][tempY - 1].setHoverValid(false);
-                        
-                        grid[tempX - 2][tempY - 2].setHover(true);
-                        grid[tempX - 2][tempY - 2].setHoverValid(false);
+                        for(int a = i; a > i - 3; a--)
+                        {
+                            for(int b = j; b > j - 3; b--)
+                            {
+                                grid[a][b].setHover(true);
+                                grid[a][b].setHoverValid(true);
+                            }
+                        }
                     }
                     else
-                    { 
-                        //                         if(first)
-                        //                         {
-                        //                             tempX = i; 
-                        //                             tempY = j;
-                        //                             first = false;
-                        //                         }
-                        grid[i][j].setHoverValid(true);
-                        grid[tempX][tempY - 1].setHover(true);
-                        grid[tempX][tempY - 1].setHoverValid(true);
-                        
-                        grid[tempX][tempY - 2].setHover(true);
-                        grid[tempX][tempY - 2].setHoverValid(true);
-                        
-                        grid[tempX - 1][tempY].setHover(true);
-                        grid[tempX - 1][tempY].setHoverValid(true);
-                        
-                        grid[tempX - 1][tempY - 1].setHover(true);
-                        grid[tempX - 1][tempY - 1].setHoverValid(true);
-                        
-                        grid[tempX - 1][tempY - 2].setHover(true);
-                        grid[tempX - 1][tempY - 2].setHoverValid(true);
-                        
-                        grid[tempX - 2][tempY].setHover(true);
-                        grid[tempX - 2][tempY].setHoverValid(true);
-                        
-                        grid[tempX - 2][tempY - 1].setHover(true);
-                        grid[tempX - 2][tempY - 1].setHoverValid(true);
-                        
-                        grid[tempX - 2][tempY - 2].setHover(true);
-                        grid[tempX - 2][tempY - 2].setHoverValid(true);
-                    } 
+                    {
+                        if(i == 0 || j == 0 || i == 1 || j == 1)
+                            break;
+                        for(int a = i; a > i - 3; a--)
+                        {
+                            for(int b = j; b > j - 3; b--)
+                            {
+                                grid[a][b].setHover(true);
+                                grid[a][b].setHoverValid(false);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -239,132 +197,4 @@ public class Grid
             }
         }
     }
-
-    
-    public void calcHover(int row, int col, boolean status)
-    {
-        for(int i = row; i > row - 2; i--)
-        {
-            for(int j = col; j > col - 2; j--)
-            {
-                //grid[i][j].setHover(status);
-                if(i == 0 || j == 0 || i == 1 || j == 1)
-                {
-                    grid[i][j].setHoverValid(false);
-                }
-                else if(path[i][j] == 1 || path[i - 1][j - 1] == 1 || path[i][j - 1] == 1 || path[i - 1][j] == 1 
-                   || path[i - 2][j] == 1 || path[i - 2][j - 1] == 1 || path[i - 2][j - 2] == 1 || path[i][j - 2] == 1 || path[i - 1][j - 2] == 1)
-                {
-                    grid[i][j].setHoverValid(false);
-                }
-                else
-                { 
-                    grid[i][j].setHoverValid(true);
-                } 
-            }
-        }
-    }
-    
 }
-    
-    /*
-    public static void addTurret()
-    {
-        for(int i = 0; i < grid.length; i++)
-        {
-            for(int j = 0; j < grid[0].length; j++)
-            {
-                if(grid[i][j].contains(GameScreen.mouse))
-                {
-                    Position.checkTurretPlace(i, j);
-                    if(Position.valid)
-                    {
-                        if(KeyHandler.basicTurretStatus == 1)
-                        {
-                            
-                            /*
-                            path[j][i] = 2;
-                            path[j][i - 1] = 2;
-                            path[j - 1][i] = 2;
-                            path[j - 1][i - 1] = 2;
-                            path[j - 2][i] = 2;
-                            path[j][i - 2] = 2;
-                            path[j - 2][i - 1] = 2;
-                            path[j - 1][i - 2] = 2;
-                            path[j - 2][i - 2] = 2;
-                            */
-                           /*
-                        }
-                        else if(KeyHandler.strongTurretStatus == 1)
-                        {
-                            path[j][i] = 3;
-                            path[j][i - 1] = 3;
-                            path[j - 1][i] = 3;
-                            path[j - 1][i - 1] = 3;
-                            path[j - 2][i] = 3;
-                            path[j][i - 2] = 3;
-                            path[j - 2][i - 1] = 3;
-                            path[j - 1][i - 2] = 3;
-                            path[j - 2][i - 2] = 3;
-                        }
-                        else if(KeyHandler.fastTurretStatus == 1)
-                        {
-                            path[j][i] = 4;
-                            path[j][i - 1] = 4;
-                            path[j - 1][i] = 4;
-                            path[j - 1][i - 1] = 4;
-                            path[j - 2][i] = 4;
-                            path[j][i - 2] = 4;
-                            path[j - 2][i - 1] = 4;
-                            path[j - 1][i - 2] = 4;
-                            path[j - 2][i - 2] = 4;
-                        }
-                        /*
-                        path[j][i] = Game.numTur++;
-                        path[j][i - 1] = Game.numTur++;
-                        path[j - 1][i] = Game.numTur++;
-                        path[j - 1][i - 1] = Game.numTur++;
-                        path[j - 2][i] = Game.numTur++;
-                        path[j][i - 2] = Game.numTur++;
-                        path[j - 2][i - 1] = Game.numTur++;
-                        path[j - 1][i - 2] = Game.numTur++;
-                        path[j - 2][i - 2] = Game.numTur++;
-                        */
-                       /*
-                    }
-                    else
-                        continue;
-                }
-            }
-        }
-                   /*
-                    path[pX][pY] = 2;
-                    path[pX + 1][pY] = 2;
-                    path[pX][pY + 1] = 2;
-                    path[pX + 1][pY + 1] = 2;
-                    path[pX + 2][pY] = 2;
-                    path[pX + 2][pY + 1] = 2;
-                    path[pX][pY + 2] = 2;
-                    path[pX + 1][pY + 2] = 2;
-                    path[pX + 2][pY + 2] = 2;
-                    
-                    */
-                   /*
-                    path[pY][pX] = 2;
-                    path[pY + 1][pX] = 2;
-                    path[pY][pX + 1] = 2;
-                    path[pY + 1][pX + 1] = 2;
-                    path[pY + 2][pX] = 2;
-                    path[pY + 2][pX + 1] = 2;
-                    path[pY][pX + 2] = 2;
-                    path[pY + 1][pX + 2] = 2;
-                    path[pY + 2][pX + 2] = 2;
-                    */
-                    /*
-                }
-            }
-        }
-        */
-        
-    
-    
