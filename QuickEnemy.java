@@ -8,7 +8,7 @@ public class QuickEnemy extends Enemy
 {
    private final int SPEED = 250;
    public static int HEALTH = 250;
-   private final int KILL_COST = 200;
+   private final int KILL_COST = 25;
    private final Image QUICK = new ImageIcon("fastenemy.png").getImage();
 
    public QuickEnemy(Position p)
