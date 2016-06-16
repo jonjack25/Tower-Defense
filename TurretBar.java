@@ -67,18 +67,21 @@ public class TurretBar
             }
             if(i == 0)
             {
+                g.setColor(new Color(0, 0, 0, 100));
                 g.fillRect(btnArray[i].x, btnArray[i].y, btnArray[i].width, btnArray[i].height);
                 g.drawImage(basic, btnStartX + (btnSizeX + space) * i,
                 (btnStartY + (frame.getFrameHeight() - screen.getMyHeight()) / 2), btnSizeX, btnSizeY, null);
             }
             else if(i == 1)
             {
+                g.setColor(new Color(0, 0, 0, 100));
                 g.fillRect(btnArray[i].x, btnArray[i].y, btnArray[i].width, btnArray[i].height);
                 g.drawImage(strong, btnStartX + (btnSizeX + space) * i,
                 (btnStartY + (frame.getFrameHeight() - screen.getMyHeight()) / 2), btnSizeX, btnSizeY, null);
             }
             else if(i == 2)
             {
+                g.setColor(new Color(0, 0, 0, 100));
                 g.fillRect(btnArray[i].x, btnArray[i].y, btnArray[i].width, btnArray[i].height);
                 g.drawImage(fast, btnStartX + (btnSizeX + space) * i,
                 (btnStartY + (frame.getFrameHeight() - screen.getMyHeight()) / 2), btnSizeX, btnSizeY, null);
@@ -89,9 +92,15 @@ public class TurretBar
             g.setColor(new Color(156, 176, 56));
             g.setFont(new Font("Serif", Font.PLAIN, 30));
                 
-            g.drawString("Damage: " + screen.key.getHover().getDamage(), frame.getWidth() / 2 - 80, btnStartY + 40 + 5);
-            g.drawString("Upgrade: " + screen.key.getHover().getUpgrade(), frame.getWidth() / 2 - 80, btnStartY + 70 + 5);
-            g.drawString("Upgrade Cost: " + screen.key.getHover().getUpgradeCost(), frame.getWidth() / 2 - 80, btnStartY + 100 + 5);
+            g.drawString("Damage: " + screen.key.getHover().getDamage(), frame.getWidth() / 2 - 100, btnStartY + 40 + 5);
+            g.drawString("Upgrade: " + screen.key.getHover().getUpgrade(), frame.getWidth() / 2 - 100, btnStartY + 70 + 5);
+            g.drawString("Upgrade Cost: " + screen.key.getHover().getUpgradeCost(), frame.getWidth() / 2 - 100, btnStartY + 100 + 5);
+            
+            g.setColor(new Color(255, 255, 255));
+            int x = screen.key.getHover().getPosition().getXCoordinate() - Grid.POSITION_SIZE / 2 - screen.key.getHover().getRadius();
+            int y = screen.key.getHover().getPosition().getYCoordinate() - Grid.POSITION_SIZE / 2 - screen.key.getHover().getRadius();
+            int r = screen.key.getHover().getRadius() * 2;
+            g.drawOval(x, y, r, r);
         }
         g.setColor(new Color(0, 0, 0));
         g.setFont(new Font("Serif", Font.PLAIN, 30));
