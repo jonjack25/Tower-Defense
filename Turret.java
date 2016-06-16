@@ -6,7 +6,9 @@ import java.util.TimerTask;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
+import java.awt.image.*;
 import javax.swing.*;
+import java.awt.geom.*;
 
 public class Turret extends Entity
 {
@@ -42,6 +44,11 @@ public class Turret extends Entity
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         //g2d.rotate(Math.toRadians(getAngle()));
         //fireAt = null;
+        AffineTransform tx = new AffineTransform();
+        tx.rotate(getAngle(), pos.getXCoordinate() - pos.getWidth() / 2, pos.getYCoordinate() - pos.getWidth() / 2);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+        //g2d.rotate(getAngle());
+        g2d.rotate(getAngle() - 165, pos.getXCoordinate() - pos.getWidth() / 2, pos.getYCoordinate() - pos.getWidth() / 2);
         g2d.drawImage(image, getPosition().getXCoordinate() - (int)getPosition().getWidth() * 2, getPosition().getYCoordinate() - (int)getPosition().getWidth() * 2, (int)getPosition().getWidth() * 3, (int)getPosition().getHeight() * 3, null);
     }
     
@@ -130,7 +137,7 @@ public class Turret extends Entity
         {
             for(int i = 0; i < e.size(); i++)
             {
-                distance = Math.sqrt(Math.pow(e.get(i).getXCoord() - pos.getXCoordinate(), 2) + Math.pow(e.get(i).getYCoord() - pos.getYCoordinate(), 2));        
+                distance = Math.sqrt(Math.pow(e.get(i).getXCoord() - (pos.getXCoordinate() - Grid.POSITION_SIZE / 2), 2) + Math.pow(e.get(i).getYCoord() - (pos.getYCoordinate() - Grid.POSITION_SIZE / 2), 2));        
                 if(radius >= distance)
                 {
                     fireAt = e.get(i);
