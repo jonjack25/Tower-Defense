@@ -17,7 +17,7 @@ public class Bullet extends Entity
     {
         e = enemy;
         damage = d;
-        bullet = new ImageIcon("newBullet.jpg").getImage();
+        bullet = new ImageIcon("newBullet.png").getImage();
     }
     
     public void changeGameState()
@@ -43,7 +43,7 @@ public class Bullet extends Entity
     
     public void setPoint(Position pos)
     {
-        p.setLocation(new Point(pos.getXCoordinate(), pos.getYCoordinate()));
+        p.setLocation(new Point(pos.getXCoordinate() - Grid.POSITION_SIZE / 2, pos.getYCoordinate() - Grid.POSITION_SIZE / 2));
     }
     
     public void moveX(int num)
@@ -63,8 +63,8 @@ public class Bullet extends Entity
  
     public void move()
     {
-        int slopeX = (int)(e.getXCoord() - p.getX());
-        int slopeY = (int)(e.getYCoord() - p.getY());
+        int slopeX = (int)(e.getXCoord() + Grid.POSITION_SIZE / 2 - p.getX());
+        int slopeY = (int)(e.getYCoord() + Grid.POSITION_SIZE / 2 - p.getY());
  
         if(slopeX > 0)
         {
@@ -89,15 +89,17 @@ public class Bullet extends Entity
     {
         Graphics2D g2d = (Graphics2D)g.create();
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-        g2d.drawImage(bullet, (int)p.getX(), (int)p.getY(), (int)getPosition().getWidth(), (int)getPosition().getHeight(), null);
+        g2d.drawImage(bullet, (int)p.getX() - Grid.POSITION_SIZE / 4, (int)p.getY() - Grid.POSITION_SIZE / 4, (int)getPosition().getWidth() / 2, (int)getPosition().getHeight() / 2, null);
     }
     
     public boolean hasCollided(Enemy e)
     {
-        if(p.getX() == e.getXCoordinate() && p.getY() == (e.getYCoordinate()))
-        {
-           return true;
-        }
+//         if(p.getX() == e.getXCoordinate() && p.getY() == (e.getYCoordinate()))
+//         {
+//            return true;
+//         }
+        if(e.getPosition().contains(p))
+            return true;
         return false;
     }
     
