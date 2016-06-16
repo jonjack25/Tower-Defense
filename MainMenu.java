@@ -1,81 +1,213 @@
-import javax.swing.*;
+import java.awt.event.*;
 import java.awt.*;
-public class MainMenu
+
+public class KeyHandler implements MouseMotionListener, MouseListener
 {
-    //private static int width = GameFrame.width;
-    //private static int height = GameFrame.height;
-    private Rectangle[] menuOptions;
-    private Point mouse = new Point(0, 0);
-    private int width = 200;
-    private int height = 100;
-    private GameScreen screen;
+    private int btnStatus = 0; //0 = not clicked, 1 = clicked
+    private int basicTurretStatus = 0, strongTurretStatus = 0, fastTurretStatus = 0, hoverStatus = 0; //0 when not active, 1 when active (user is placing)
     private GameFrame frame;
+    private Game game;
+    private GameScreen screen;
+    private TurretBar tb;
+    private Point mouse = new Point(0,0);
+    private Turret t = null, hoverTurret = null;
     
-    public MainMenu(GameScreen gs)
+    public KeyHandler(GameFrame f, Game g, GameScreen gs)
     {
-        //f.addMouseListener(new KeyHandler(f));
-        //f.addMouseMotionListener(new KeyHandler(f));
-        //setBackground(Color.BLACK);
-        
-        screen = gs;
-        frame = screen.getFrame();
-        define();
-    }
-    
-    public MainMenu(GameFrame f)
-    {
-        f.addMouseListener(new KeyHandler(f));
-        f.addMouseMotionListener(new KeyHandler(f));
         frame = f;
-        //setBackground(Color.BLACK);
-        define();
+        game = g;
+        screen = gs;
     }
-    
-    public void define()
+
+    public KeyHandler(GameFrame f)
     {
-        menuOptions = new Rectangle[3];
-        menuOptions[0] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 225, width, height);
-        menuOptions[1] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 375, width, height);
-        menuOptions[2] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 525, width, height);
-        //setVisible(true);
+        frame = f;
     }
     
-    public void draw(Graphics g)
-    {   
+    public void mouseEntered(MouseEvent arg0)
+    {
+        
+    }
+    
+    public void mouseExited(MouseEvent arg0)
+    {
+        
+    }
+    
+    public void mousePressed(MouseEvent arg0)
+    {
+
+    }
+    
+    public void mouseReleased(MouseEvent arg0)
+    {
+        
+    }
+    
+    public void mouseClicked(MouseEvent arg0)
+    {
         if(screen.getMenu())
         {
-            g.setColor(new Color(0, 0, 0));
-            screen.getGame().draw(g);
-            screen.getFrame().setBackground(Color.BLACK);
-            g.setColor(new Color(255, 255, 255));
-            g.drawRect(0, 29 * 20, 1024, 768 - 29 * 20);
-            g.fillRect(0, 29 * 20, 1024, 768 - 29 * 20);
-            g.setColor(new Color(0, 0, 0));
-            for(int i = 0; i < menuOptions.length; i++)
+            if(screen.getMainMenu().menuBtn1())
             {
-                g.drawRect(menuOptions[i].x, menuOptions[i].y, menuOptions[i].width, menuOptions[i].height);
-                g.fillRect(menuOptions[i].x, menuOptions[i].y, menuOptions[i].width, menuOptions[i].height);
+                screen.setMenu(false);
             }
-            g.setColor(new Color(255, 255, 255));
-            g.setFont(new Font("Serif", Font.PLAIN, 40));
-            g.drawString("Play", frame.getWidth() / 2 - 30, 175 + height );
-            g.drawString("Options", frame.getWidth() / 2 - 60, 325 + height);
-            g.drawString("Exit", frame.getWidth() / 2 - 30, 475 + height);
+            else if(screen.getMainMenu().menuBtn3())
+            {
+                screen.setMenu(false);
+                frame.dispose();
+            }
+        }
+        else
+        {
+            if(basicTurretStatus == 1)
+            {
+                if(game.getGrid().isValidPosition(game.getGrid().getPosition(screen.key.getMouse())))
+                {
+                    game.placeTurret(t, game.getGrid().getPosition(mouse));
+                    basicTurretStatus = 0;
+                    btnStatus = 0;
+                }
+                else
+                {
+                    game.cancelBasePurchase();
+                    basicTurretStatus = 0;
+                    btnStatus = 0;
+                    t = null;
+                }
+            }
+            else if(strongTurretStatus == 1)
+            {
+                if(game.getGrid().isValidPosition(game.getGrid().getPosition(screen.getMousePoint())))
+                {
+                    game.placeTurret(t, game.getGrid().getPosition(mouse));
+                    strongTurretStatus = 0;
+                    btnStatus = 0;
+                }
+                else
+                {
+                    game.cancelStrongPurchase();
+                    strongTurretStatus = 0;
+                    btnStatus = 0;
+                    t = null;
+                }
+            }
+            else if(fastTurretStatus == 1)
+            {
+                if(game.getGrid().isValidPosition(game.getGrid().getPosition(screen.getMousePoint())))
+                {
+                    game.placeTurret(t, game.getGrid().getPosition(mouse));
+                    fastTurretStatus = 0;
+                    btnStatus = 0;
+                }
+                else
+                {
+                    game.cancelFastPurchase();
+                    fastTurretStatus = 0;
+                    btnStatus = 0;
+                    t = null;
+                }
+            }
+            else if(btnStatus == 0)
+            {
+                if(tb.mouseBtn1())
+                {
+                    t = game.purchaseBaseTurret();
+                    if(t != null)
+                    {
+                        basicTurretStatus = 1;
+                        btnStatus = 1;
+                    }
+                }
+                else if(tb.mouseBtn2())
+                {
+                    t = game.purchaseStrongTurret();
+                    if(t != null)
+                    {
+                        strongTurretStatus = 1;
+                        btnStatus = 1;
+                    }
+                }
+                else if(tb.mouseBtn3())
+                {
+                    t = game.purchaseFastTurret();
+                    if(t != null)
+                    {
+                        fastTurretStatus = 1;
+                        btnStatus = 1;
+                    }
+                }
+                else if(game.findTurret(game.getGrid().getPosition(screen.getMousePoint())) != null)
+                {
+                   game.upgradeTurret(game.findTurret(game.getGrid().getPosition(screen.getMousePoint())));
+                }
+            }
         }
     }
     
-    public boolean menuBtn1()
+    public void mouseDragged(MouseEvent arg0)
     {
-        return menuOptions[0].contains(screen.getMousePoint());
+        hoverTurret = null;
+        hoverStatus = 0;
+        mouse = new Point(arg0.getX() + (frame.getFrameWidth() - screen.getMyWidth()) / 2, arg0.getY() + (frame.getFrameHeight() - screen.getMyHeight()) / 2 - 50);        
+        screen.setMousePoint(mouse);
+        if(screen.getGame().findTurret(screen.getGame().getGrid().getPosition(mouse)) != null)
+        {
+            hoverTurret = screen.getGame().findTurret(screen.getGame().getGrid().getPosition(mouse));
+            hoverStatus = 1;
+        }
     }
     
-    public boolean menuBtn2()
+    public void mouseMoved(MouseEvent arg0)
     {
-        return menuOptions[1].contains(screen.getMousePoint());
+        hoverTurret = null;
+        hoverStatus = 0;
+        mouse = new Point(arg0.getX() + (frame.getFrameWidth() - screen.getMyWidth()) / 2, arg0.getY() + (frame.getFrameHeight() - screen.getMyHeight()) / 2 - 50);
+        screen.setMousePoint(mouse);
+        if(screen.getGame().findTurret(screen.getGame().getGrid().getPosition(mouse)) != null)
+        {
+            hoverTurret = screen.getGame().findTurret(screen.getGame().getGrid().getPosition(mouse));
+            hoverStatus = 1;
+        }
     }
     
-    public boolean menuBtn3()
+    public int returnStatus()
     {
-        return menuOptions[2].contains(screen.getMousePoint());
+        return btnStatus;
+    }
+    
+    public int basicTurretStatus()
+    {
+        return basicTurretStatus;
+    }
+    
+    public int fastTurretStatus()
+    {
+        return fastTurretStatus;
+    }
+    
+    public int strongTurretStatus()
+    {
+        return strongTurretStatus;
+    }
+    
+    public int hoverStatus()
+    {
+        return hoverStatus;
+    }
+    
+    public Turret getHover()
+    {
+        return hoverTurret;
+    }
+    
+    public Point getMouse()
+    {
+        return mouse;
+    }
+    
+    public void addTB(TurretBar t)
+    {
+        tb = t;
     }
 }
