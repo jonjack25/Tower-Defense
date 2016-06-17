@@ -1,3 +1,6 @@
+import java.applet.*;
+import javax.sound.sampled.Clip;
+
 public class Sound
 {
    public Sound()
