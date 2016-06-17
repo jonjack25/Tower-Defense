@@ -27,8 +27,8 @@ public class Position extends Rectangle
         row = r;  
         col = c;
         setBounds(x, y, h, w);
-        grassTile = new ImageIcon("groundPixel.png").getImage();
-        pathTile = new ImageIcon("pathPixel.jpg").getImage();
+        grassTile = new ImageIcon("resources/fire.png").getImage();
+        pathTile = new ImageIcon("resources/dirt.png").getImage();
         basic = new ImageIcon("circleTurretRed.png").getImage();
         strong = new ImageIcon("circleTurretBlue.png").getImage();
         fast = new ImageIcon("circleTurretGreen.png").getImage();
@@ -53,6 +53,7 @@ public class Position extends Rectangle
     
     public void draw(Graphics g)
     {
+        g.setColor(new Color(0, 0, 0));
         if(hover)
         {
             if(hoverValid)
@@ -70,6 +71,7 @@ public class Position extends Rectangle
         }
         else
         {
+            g.drawRect(x, y, width, height);
             if(ground == 0)
                 g.drawImage(grassTile, x, y, width, height, null);
             else if(ground == 1)

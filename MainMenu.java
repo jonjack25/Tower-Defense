@@ -29,9 +29,9 @@ public class MainMenu
     public void define()
     {
         menuOptions = new Rectangle[3];
-        menuOptions[0] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 75, width, height);
-        menuOptions[1] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 225, width, height);
-        menuOptions[2] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 375, width, height);
+        menuOptions[0] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 225, width, height);
+        menuOptions[1] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 375, width, height);
+        menuOptions[2] = new Rectangle(frame.getFrameWidth() / 2 - width / 2, 525, width, height);
         //setVisible(true);
     }
     
@@ -62,9 +62,12 @@ public class MainMenu
             }
             g.setColor(new Color(255, 255, 255));
             g.setFont(new Font("Serif", Font.PLAIN, 40));
-            g.drawString("Play", frame.getWidth() / 2 - 30, 25 + height );
-            g.drawString("Options", frame.getWidth() / 2 - 60, 175 + height);
-            g.drawString("Exit", frame.getWidth() / 2 - 30, 325 + height);
+            g.drawString("Play", frame.getWidth() / 2 - 30, 175 + height );
+            g.drawString("Options", frame.getWidth() / 2 - 60, 325 + height);
+            g.drawString("Exit", frame.getWidth() / 2 - 30, 475 + height);
+            
+            g.setFont(new Font("Serif", Font.PLAIN, 70));
+            g.drawString("Aftermath", frame.getWidth() / 2 - 200, 25 + height );
         }
     }
     
