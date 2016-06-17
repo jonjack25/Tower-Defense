@@ -1,0 +1,8 @@
+public class Sound
+{
+   public Sound()
+   {
+       AudioClip music = Applet.newAudioClip(Sound.class.getResource("300.wav"));
+       music.loop();
+   }
+}
