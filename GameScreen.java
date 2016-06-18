@@ -22,7 +22,7 @@ public class GameScreen extends JPanel implements Runnable
 
     private Point mousePoint = new Point(0, 0);
     
-    
+    private Sound sound;
     private TurretBar tb;
 
     private boolean menu = true;
@@ -31,7 +31,7 @@ public class GameScreen extends JPanel implements Runnable
     
     private Game game;
     private Grid grid;
-    public KeyHandler key;
+    private KeyHandler key;
     private GameFrame frame;
 
          
@@ -45,7 +45,8 @@ public class GameScreen extends JPanel implements Runnable
         f.addMouseMotionListener(key);
         setDoubleBuffered(true);
         //timer = new Timer(.1, );
-        
+        sound = new Sound("resources/Menu.wav");
+        sound.start();
         gameLoop.start();
     }
     
@@ -55,12 +56,21 @@ public class GameScreen extends JPanel implements Runnable
         {
             if(first)
             {
+                Dimension size = new Dimension(1005, 748);
+                frame.setSize(size);
+                frame.setLocationRelativeTo(null);
+                frame.setDimensions(1024,768);
+                frame.setUpGUI();
                 myWidth = getWidth();
                 myHeight = getHeight();
-                
+                setSound("resources/300.wav");
                 tb = new TurretBar(this);
                 key.addTB(tb);
                 first = false;
+            }
+            if(game.getGameOver() == true)
+            {
+                key.setReturnStatus(0);
             }
             
             g.setColor(new Color(150, 150, 150));
@@ -71,24 +81,14 @@ public class GameScreen extends JPanel implements Runnable
             g.fillRect(0, tb.getBtnStartY() + 1, frame.getWidth(), frame.getHeight());
             g.setColor(new Color(0, 0, 0));
             
-            if(key.returnStatus() == 1)
-            {
-                mousePoint = key.getMouse();
-                if(game.getGrid().isValidPosition(game.getGrid().getPosition(mousePoint)))
-                {
-                    
-                }
-                else
-                {
-                    
-                }
-            }
-            tb.draw(g);
+            
             game.updateGame();
             game.draw(g);
+            tb.draw(g);
         }
         else
         {
+            
             myWidth = getWidth();
             myHeight = getHeight();
             
@@ -100,15 +100,9 @@ public class GameScreen extends JPanel implements Runnable
     {
         while(true)
         {
-            if(!first)
-            {
-                
-
-            }
             repaint();
         }
     }
-    
     
     public int getMyWidth()
     {
@@ -140,6 +134,14 @@ public class GameScreen extends JPanel implements Runnable
         menu = b;
     }
     
+    public void setSound(String s)
+    {
+        if(sound != null)
+            sound.stop();
+        sound = new Sound(s);
+        sound.start();
+    }
+    
     public GameFrame getFrame()
     {
         return frame;
@@ -158,6 +160,11 @@ public class GameScreen extends JPanel implements Runnable
     public Game getGame()
     {
         return game;        
+    }
+    
+    public KeyHandler getKey()
+    {
+        return key;
     }
        
 }

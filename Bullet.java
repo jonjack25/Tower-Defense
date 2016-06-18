@@ -9,7 +9,7 @@ public class Bullet extends Entity
     private Point p = new Point();
     private int damage;
     private int gameState = 0;
-    private final int PIXELS = 4;
+    private final int PIXELS = 12;
     private Position pos;
     private Image bullet;
     
@@ -17,7 +17,7 @@ public class Bullet extends Entity
     {
         e = enemy;
         damage = d;
-        bullet = new ImageIcon("newBullet.png").getImage();
+        bullet = new ImageIcon("resources/newBullet.png").getImage();
     }
     
     public void changeGameState()
@@ -94,10 +94,6 @@ public class Bullet extends Entity
     
     public boolean hasCollided(Enemy e)
     {
-//         if(p.getX() == e.getXCoordinate() && p.getY() == (e.getYCoordinate()))
-//         {
-//            return true;
-//         }
         if(e.getPosition().contains(p))
             return true;
         return false;

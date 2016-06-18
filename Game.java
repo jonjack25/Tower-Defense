@@ -17,26 +17,34 @@ public class Game
     private int typeToSpawn;
     private int randSpawnTime;
     private int spawnPosition;
-    private int previousSpawn;
-    private boolean first = true;
-    private boolean next = true;
+    private int lives;
+    private boolean first;
+    private boolean next;
+    private boolean displayRound;
+    private boolean gameOver;
     private Timer spawn, interval;
+    private GameScreen screen;
 
     public Game(GameScreen gs)
     {
+        screen = gs;
         grid = new Grid(gs);
         turrets = new ArrayList<Turret>();
         enemies = new ArrayList<Enemy>();
         bullets = new ArrayList<Bullet>();
         base = new Base(grid.getGameGrid()[22][45], 4, 5);
-        gameState = 1;
+        gameState = 0;
         enemyCount = 2;
-        round = 1;
+        round = 0;
         coins = 300;
-        randSpawnTime = (int)(Math.random() * 2001) + 500;
+        randSpawnTime = (int)(Math.random() * 1701) + 300;
         typeToSpawn = (int)(Math.random() * 3);
         spawnPosition = (int)(Math.random() * 4) + 3;
-        previousSpawn = spawnPosition;
+        lives = 5;
+        first = true;
+        next = false;
+        displayRound = true;
+        gameOver = false;
         
         spawn = new Timer(randSpawnTime, new ActionListener()
         {
@@ -44,11 +52,6 @@ public class Game
             {
                 if(enemyCount > 0)
                 {
-                    //System.out.println(enemyCount);
-                    while(spawnPosition == previousSpawn)
-                    {
-                        spawnPosition = (int)(Math.random() * 4) + 3;
-                    }
                     if(typeToSpawn == 0)
                     {
                         Enemy en = new BaseEnemy(grid.getGameGrid()[spawnPosition][0]);
@@ -68,14 +71,11 @@ public class Game
                         grid.setFilled(grid.getGameGrid()[spawnPosition][0], en);
                     }
                       
-                    randSpawnTime = (int)(Math.random() * 2001) + 2000;
-                    //setDelay(randSpawnTime);
-                    next = true;
+                    randSpawnTime = (int)(Math.random() * 1701) + 300;
                     typeToSpawn = (int)(Math.random() * 3);
-                    previousSpawn = spawnPosition;
                     spawnPosition = (int)(Math.random() * 4) + 3;
+                    next = true;
                     enemyCount--;
-                    //System.out.println(enemies.size());
                 }
             }
         });
@@ -84,20 +84,31 @@ public class Game
             public void actionPerformed(ActionEvent e)
             {
                 gameState = 1;
-                if(enemyCount == 0)
-                {
-                    round++;
-                    scaleEnemies();
-                }
+                spawn.start();
+                scaleEnemies();
             }
         });
         spawn.setInitialDelay(0);
-        spawn.start();
     }
     
     public Grid getGrid()
     {
         return grid;
+    }
+    
+    public int getCoins()
+    {
+        return coins;
+    }
+    
+    public int getRound()
+    {
+        return round;
+    }
+    
+    public boolean getGameOver()
+    {
+        return gameOver;
     }
     
     public void updateGame()
@@ -106,8 +117,11 @@ public class Game
         {
             if(first == true)
             {
+                round++;
                 interval.start();
+                removeEntities();
                 first = false;
+                displayRound = true;
             }
         }
         else if(gameState == 1)
@@ -116,21 +130,32 @@ public class Game
             {
                 first = true;
                 interval.stop();
-                spawn.start();
+                displayRound = false;
+                return;
+            }
+            if(next)
+            {
+                spawn.setDelay(randSpawnTime);
+                next = false;
             }
             fireTurrets();
             moveEnemies();
             moveBullets();
             collideEnemiesAndBullets();
             removeEntities();
-            if(enemies.size() == 0)
+            if(enemies.size() == 0 && enemyCount == 0)
             {
                 gameState = 0;
             }
             if(baseHasBeenBreached())
             {
+                lives--;
+            }
+            if(lives == 0)
+            {
                 gameState = 2;
-                System.out.println("Base has been breached");
+                gameOver = true;
+                screen.setSound("resources/Lose.wav");
             }
         }
         else
@@ -150,6 +175,22 @@ public class Game
         for(Bullet b : bullets)
             b.draw(g);
         base.draw(g);
+        
+        if(displayRound && round != 0)
+        {
+            g.setColor(new Color(200, 34, 12));
+            g.setFont(new Font("SansSerif", Font.BOLD, 300));
+            
+            g.drawString(round + "", screen.getFrame().getWidth() / 2 - 100, screen.getFrame().getHeight() / 2);
+        }
+        
+        if(gameOver)
+        {
+            g.setColor(new Color(255, 0, 0));
+            g.setFont(new Font("SansSerif", Font.BOLD, 100));
+            
+            g.drawString("GAME OVER", screen.getFrame().getWidth() / 2 - 300, screen.getFrame().getHeight() / 2 - 100);
+        }
     }
     
     public Turret findTurret(Position p)
@@ -170,16 +211,6 @@ public class Game
             }
         }
         return null;
-    }
-    
-    public int getCoins()
-    {
-        return coins;
-    }
-    
-    public int getRound()
-    {
-        return round;
     }
     
     public Turret purchaseStrongTurret()
@@ -249,7 +280,6 @@ public class Game
             coins -= t.getUpgradeCost();
             t.upgradeDamage();
         }
-        //System.out.println(coins);
     }
     
     public void getKillCoins(Enemy e)
@@ -259,10 +289,13 @@ public class Game
     
     public void scaleEnemies()
     {
+        QuickEnemy.HEALTH += 50;
+        BaseEnemy.HEALTH += 75;
+        SlowEnemy.HEALTH += 100;
+        QuickEnemy.KILL_COST += 1;
+        BaseEnemy.KILL_COST += 2;
+        SlowEnemy.KILL_COST += 3;
         enemyCount = 2 * round;
-        QuickEnemy.HEALTH += 20;
-        BaseEnemy.HEALTH += 30;
-        SlowEnemy.HEALTH += 40;
     }
     
     public void fireTurrets()
@@ -300,18 +333,6 @@ public class Game
             dir = e.getPath().getDirection();
             if(temp == null)
             {
-//                 Position p;
-//                 if(axis == 1 && dir == 1)
-//                     temp = new Point(e.getXCoord() + 1, e.getYCoord());
-//                 else if(axis == 1 && dir == -1)
-//                     temp = new Point(e.getXCoord(), e.getYCoord() + 1);
-//                 else if(axis == -1 && dir == 1)
-//                     temp = new Point(e.getXCoord(), e.getYCoord() + 1);
-//                 else if(axis == -1 && dir == -1)
-//                     temp = new Point(e.getXCoord() -1, e.getYCoord());
-//                 p = grid.getPosition(temp);
-//                 if(p == e.getPosition())
-//                     e.setCoordinates(temp);
                  continue;
             }
             else
@@ -395,14 +416,18 @@ public class Game
     
     public boolean baseHasBeenBreached()
     {
-        for(Enemy e : enemies)
+        for(int e = enemies.size() - 1; e >= 0; e--)
         {
             for(int i = base.getPosition().getRow(); i < base.getPosition().getRow() + base.getLength(); i++)
             {
                 for(int j = base.getPosition().getCol(); j < base.getPosition().getCol() + base.getWidth(); j++)
                 {
-                    if(e.getPosition().equals(grid.getGameGrid()[i][j]))
+                    if(enemies.get(e).getPosition().equals(grid.getGameGrid()[i][j]))
+                    {
+                        grid.setFilled(enemies.get(e).getPosition(), null);
+                        enemies.remove(e);
                         return true;
+                    }
                 }
             }
         }

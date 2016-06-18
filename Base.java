@@ -5,7 +5,7 @@ public class Base extends Entity
     private Position pos;
     private int length;
     private int width;
-    private final Image image = new ImageIcon("base.png").getImage();
+    private final Image image = new ImageIcon("resources/base.png").getImage();
     public Base(Position p, int l, int w)
     {
         pos = p;
@@ -32,6 +32,6 @@ public class Base extends Entity
     {
         Graphics2D g2d = (Graphics2D)g.create();
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-        g2d.drawImage(image, getPosition().getXCoordinate(), getPosition().getYCoordinate(), (int)getPosition().getWidth() * width, (int)getPosition().getHeight() * length, null);
+        g2d.drawImage(image, getPosition().getXCoordinate() + (int)getPosition().getWidth() * width, getPosition().getYCoordinate(), -1 * (int)getPosition().getWidth() * width, (int)getPosition().getHeight() * length, null);
     }
 }

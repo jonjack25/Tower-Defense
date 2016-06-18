@@ -1,23 +1,15 @@
-import java.awt.Graphics;
+import java.awt.*;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
 import java.io.*;
-import javax.imageio.*;
-import javax.swing.*;
 
 public class BaseTurret extends Turret
 {
+    //CONSTANTS
     private final int RELOAD = 2000;
     public static final int DAMAGE = 250;
     private final int UPGRADE = 20;
-    public static final int PURCHASE_COST = 200;
-    private final Image BASE = new ImageIcon("circleTurretRed.png").getImage();
+    public static final int PURCHASE_COST = 300;
+    private final Image BASE = new ImageIcon("resources/circleTurretRed.png").getImage();
     
     public BaseTurret()
     {

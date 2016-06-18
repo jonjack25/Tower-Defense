@@ -1,16 +1,13 @@
-
-import java.awt.Graphics;
 import java.awt.*;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 public class SlowEnemy extends Enemy
 {
-   private final int SPEED = 1000;
-   public static int HEALTH = 1000;
-   private final int KILL_COST = 100;
-   private final Image SLOW = new ImageIcon("slowenemy.png").getImage();
+   //CONSTANTS
+   private final int SPEED = 500;
+   public static int HEALTH = 500;
+   public static int KILL_COST = 35;
+   private final Image SLOW = new ImageIcon("resources/slowenemy.png").getImage();
 
    public SlowEnemy(Position p)
    {

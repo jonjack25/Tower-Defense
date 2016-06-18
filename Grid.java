@@ -15,7 +15,6 @@ public class Grid
     Image grassTile, pathTile;
     
     private Position[][] grid;
-    //public ArrayList turrets = new ArrayList();
     
     private int[][] path ={{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -57,11 +56,9 @@ public class Grid
         {   
             for(int j = 0; j < grid[0].length; j++)
             {
-                grid[i][j] = new Position(508 + (screen.getMyWidth() / 2) - (worldWidth * positionSize / 2) + (j * positionSize), i * positionSize, positionSize, positionSize, i, j);
+                grid[i][j] = new Position(498 + (screen.getWidth() / 2) - (worldWidth * positionSize / 2) + (j * positionSize), i * positionSize, positionSize, positionSize, i, j);
             }
         }
-        grassTile = new ImageIcon("groundPixel.png").getImage();
-        pathTile = new ImageIcon("pathPixel.jpg").getImage();
     }
     
     public Position getPosition(Point p)
@@ -162,7 +159,7 @@ public class Grid
                 {
                     grid[i][j].setGround(1);
                 }
-                if(screen.key.returnStatus() == 1 && grid[i][j].contains(screen.getMousePoint()) && first)
+                if(screen.getKey().returnStatus() == 1 && grid[i][j].contains(screen.getMousePoint()) && first)
                 {
                     first = false;
                     if(i != 0 && j != 0 && i != 1 && j != 1 && isValidPosition(grid[i][j]))

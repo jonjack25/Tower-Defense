@@ -29,26 +29,6 @@ public class Position extends Rectangle
         setBounds(x, y, h, w);
         grassTile = new ImageIcon("resources/fire.png").getImage();
         pathTile = new ImageIcon("resources/dirt.png").getImage();
-        basic = new ImageIcon("circleTurretRed.png").getImage();
-        strong = new ImageIcon("circleTurretBlue.png").getImage();
-        fast = new ImageIcon("circleTurretGreen.png").getImage();
-    }
-    
-    public Position(Position p)
-    {
-        xCoordinate = p.getXCoordinate();
-        yCoordinate = p.getYCoordinate();
-        length = p.getPosLength();
-        width = p.getPosWidth();
-        entityType = getType();
-        row = getRow();
-        col = getCol();
-        setBounds(xCoordinate, yCoordinate, length, width);
-        grassTile = new ImageIcon("groundPixel.png").getImage();
-        pathTile = new ImageIcon("pathPixel.jpg").getImage();
-        basic = new ImageIcon("circleTurretRed.png").getImage();
-        strong = new ImageIcon("circleTurretBlue.png").getImage();
-        fast = new ImageIcon("circleTurretGreen.png").getImage();
     }
     
     public void draw(Graphics g)

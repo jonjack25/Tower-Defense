@@ -3,6 +3,7 @@ import java.awt.*;
 public class TurretBar 
 {
     private Rectangle[] btnArray;
+    private Rectangle restart;
     private int turretStoreSize = 3;
     private int btnSizeX = 100, btnSizeY = 100;
     private int space = 10;
@@ -16,31 +17,24 @@ public class TurretBar
         screen = gs;
         frame = screen.getFrame();
         btnArray = new Rectangle[turretStoreSize];
-        basic = new ImageIcon("circleTurretRed.png").getImage();
-        strong = new ImageIcon("circleTurretBlue.png").getImage();
-        fast = new ImageIcon("circleTurretGreen.png").getImage();
+        basic = new ImageIcon("resources/circleTurretRed.png").getImage();
+        strong = new ImageIcon("resources/circleTurretBlue.png").getImage();
+        fast = new ImageIcon("resources/circleTurretGreen.png").getImage();
         for(int i = 0; i < btnArray.length; i++)
         {
             btnArray[i] = new Rectangle(btnStartX + (btnSizeX + space) * i,
-                (btnStartY + (frame.getHeight() - screen.getHeight()) / 2), btnSizeX, btnSizeY);
-            /*
-            btnArray[i].setLocation(btnStartX + (btnSizeX + space) * i,
-                (btnStartY + (GameFrame.height - GameScreen.myHeight) / 2));
-            btnArray[i].setSize(btnSizeX, btnSizeY);
-            */
-            
-            // x: GameScreen.myWidth / 2 - turretStoreSize * (btnSizeX + space) / 2 + (btnSizeX + space) * i
-            
+                (btnStartY + (frame.getHeight() - screen.getMyHeight()) / 2), btnSizeX, btnSizeY);
         }
     }
     
     public void draw(Graphics g)
     {
+        if(screen.getGame().getGameOver() == true)
+            return;
         for(int i = 0; i < btnArray.length; i++)
         {
-            //btnArray[i].addMouseListener(new KeyHandler());
             g.setColor(new Color(0, 0, 0));
-            if(btnArray[i].contains(screen.key.getMouse()))
+            if(btnArray[i].contains(screen.getKey().getMouse()))
             {
                 g.setColor(new Color(0, 0, 0, 100));
                 g.fillRect(btnArray[i].x, btnArray[i].y, btnArray[i].width, btnArray[i].height);
@@ -70,36 +64,36 @@ public class TurretBar
                 g.setColor(new Color(0, 0, 0, 100));
                 g.fillRect(btnArray[i].x, btnArray[i].y, btnArray[i].width, btnArray[i].height);
                 g.drawImage(basic, btnStartX + (btnSizeX + space) * i,
-                (btnStartY + (frame.getFrameHeight() - screen.getMyHeight()) / 2), btnSizeX, btnSizeY, null);
+                (btnStartY + (frame.getHeight() - screen.getHeight()) / 2), btnSizeX, btnSizeY, null);
             }
             else if(i == 1)
             {
                 g.setColor(new Color(0, 0, 0, 100));
                 g.fillRect(btnArray[i].x, btnArray[i].y, btnArray[i].width, btnArray[i].height);
                 g.drawImage(strong, btnStartX + (btnSizeX + space) * i,
-                (btnStartY + (frame.getFrameHeight() - screen.getMyHeight()) / 2), btnSizeX, btnSizeY, null);
+                (btnStartY + (frame.getHeight() - screen.getHeight()) / 2), btnSizeX, btnSizeY, null);
             }
             else if(i == 2)
             {
                 g.setColor(new Color(0, 0, 0, 100));
                 g.fillRect(btnArray[i].x, btnArray[i].y, btnArray[i].width, btnArray[i].height);
                 g.drawImage(fast, btnStartX + (btnSizeX + space) * i,
-                (btnStartY + (frame.getFrameHeight() - screen.getMyHeight()) / 2), btnSizeX, btnSizeY, null);
+                (btnStartY + (frame.getHeight() - screen.getHeight()) / 2), btnSizeX, btnSizeY, null);
             }
         }
-        if(screen.key.hoverStatus() == 1)
+        if(screen.getKey().hoverStatus() == 1)
         {
             g.setColor(new Color(156, 176, 56));
             g.setFont(new Font("Serif", Font.PLAIN, 30));
                 
-            g.drawString("Damage: " + screen.key.getHover().getDamage(), frame.getWidth() / 2 - 100, btnStartY + 40 + 5);
-            g.drawString("Upgrade: " + screen.key.getHover().getUpgrade(), frame.getWidth() / 2 - 100, btnStartY + 70 + 5);
-            g.drawString("Upgrade Cost: " + screen.key.getHover().getUpgradeCost(), frame.getWidth() / 2 - 100, btnStartY + 100 + 5);
+            g.drawString("Damage: " + screen.getKey().getHover().getDamage(), frame.getWidth() / 2 - 100, btnStartY + 40 + 5);
+            g.drawString("Upgrade: " + screen.getKey().getHover().getUpgrade(), frame.getWidth() / 2 - 100, btnStartY + 70 + 5);
+            g.drawString("Upgrade Cost: " + screen.getKey().getHover().getUpgradeCost(), frame.getWidth() / 2 - 100, btnStartY + 100 + 5);
             
             g.setColor(new Color(255, 255, 255));
-            int x = screen.key.getHover().getPosition().getXCoordinate() - Grid.POSITION_SIZE / 2 - screen.key.getHover().getRadius();
-            int y = screen.key.getHover().getPosition().getYCoordinate() - Grid.POSITION_SIZE / 2 - screen.key.getHover().getRadius();
-            int r = screen.key.getHover().getRadius() * 2;
+            int x = screen.getKey().getHover().getPosition().getXCoordinate() - Grid.POSITION_SIZE / 2 - screen.getKey().getHover().getRadius();
+            int y = screen.getKey().getHover().getPosition().getYCoordinate() - Grid.POSITION_SIZE / 2 - screen.getKey().getHover().getRadius();
+            int r = screen.getKey().getHover().getRadius() * 2;
             g.drawOval(x, y, r, r);
         }
         g.setColor(new Color(0, 0, 0));

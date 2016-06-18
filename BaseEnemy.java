@@ -6,10 +6,10 @@ import javax.swing.*;
 
 public class BaseEnemy extends Enemy
 {
-   private final int SPEED = 500;
-   public static int HEALTH = 500;
-   private final int KILL_COST = 50;
-   private final Image BASE = new ImageIcon("baseenemy.png").getImage();
+   private final int SPEED = 300;
+   public static int HEALTH = 250;
+   public static int KILL_COST = 30;
+   private final Image BASE = new ImageIcon("resources/baseenemy.png").getImage();
 
    public BaseEnemy(Position p)
    {

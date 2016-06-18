@@ -46,23 +46,32 @@ public class KeyHandler implements MouseMotionListener, MouseListener
     
     public void mouseClicked(MouseEvent arg0)
     {
+        if(game.getGameOver() == true)
+        {
+            btnStatus = 0;
+            basicTurretStatus = 0;
+            strongTurretStatus = 0;
+            fastTurretStatus = 0;
+            hoverStatus = 0;
+            hoverTurret = null;
+            return;
+        }
         if(screen.getMenu())
         {
             if(screen.getMainMenu().menuBtn1())
             {
                 screen.setMenu(false);
             }
-            else if(screen.getMainMenu().menuBtn3())
+            else if(screen.getMainMenu().menuBtn2())
             {
-                screen.setMenu(false);
-                frame.dispose();
+                frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
             }
         }
         else
         {
             if(basicTurretStatus == 1)
             {
-                if(game.getGrid().isValidPosition(game.getGrid().getPosition(screen.key.getMouse())))
+                if(game.getGrid().isValidPosition(game.getGrid().getPosition(screen.getKey().getMouse())))
                 {
                     game.placeTurret(t, game.getGrid().getPosition(mouse));
                     basicTurretStatus = 0;
@@ -204,6 +213,11 @@ public class KeyHandler implements MouseMotionListener, MouseListener
     public Point getMouse()
     {
         return mouse;
+    }
+    
+    public void setReturnStatus(int i)
+    {
+        btnStatus = i;
     }
     
     public void addTB(TurretBar t)

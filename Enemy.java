@@ -31,19 +31,24 @@ public class Enemy extends Entity
     {
         Graphics2D g2d = (Graphics2D)g.create();
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-        g2d.drawImage(image, getXCoord(), getYCoord(), (int)getPosition().getWidth(), (int)getPosition().getHeight(), null);
+        if(path.getAxis() == 1 && path.getDirection() == -1)
+        {
+            g2d.drawImage(image, getXCoord() + (int)getPosition().getWidth() + 15, getYCoord() - 15, -((int)getPosition().getWidth() + 15), (int)getPosition().getHeight() + 15, null);
+        }
+        else
+            g2d.drawImage(image, getXCoord(), getYCoord() - 15, (int)getPosition().getWidth() + 15, (int)getPosition().getHeight() + 15, null);
         
         if(health != fullHealth)
         {
             g.setColor(new Color(0, 0, 0));
-            g.drawRect(getXCoord() + 0, getYCoord() - 5, 25, 5);
+            g.drawRect(getXCoord() + 0, getYCoord() - 5 - 15, 25, 5);
             g.setColor(new Color(255, 0, 0));
-            g.fillRect(getXCoord() + 0, getYCoord() - 5, 25, 5);
+            g.fillRect(getXCoord() + 0, getYCoord() - 5 - 15, 25, 5);
             //g.fillRect(getXCoord() + 0, getYCoord() - 5, 25 * (int)(health / fullHealth), 5);
             //g.setColor(new Color(255, 0, 0));
             //g.fillRect(getXCoord() + 25 * (int)(health / fullHealth), getYCoord() - 5, 25 - 25 * (int)(health / fullHealth), 5);
             g.setColor(new Color(0, 255, 0));
-            g.fillRect(getXCoord() + 0, getYCoord() - 5, 25 * health / fullHealth, 5);
+            g.fillRect(getXCoord() + 0, getYCoord() - 5 - 15, 25 * health / fullHealth, 5);
         }
     }
     
