@@ -166,5 +166,13 @@ public class GameScreen extends JPanel implements Runnable
     {
         return key;
     }
+    
+    public void restartGame()
+    {
+        frame.dispose();
+        sound.stop();
+        frame = new GameFrame();
+        menu = false;
+    }
        
 }
