@@ -54,6 +54,10 @@ public class KeyHandler implements MouseMotionListener, MouseListener
             fastTurretStatus = 0;
             hoverStatus = 0;
             hoverTurret = null;
+            if(screen.getTB().restartBtn())
+            {
+                screen.restartGame();
+            }
             return;
         }
         if(screen.getMenu())
@@ -150,6 +154,10 @@ public class KeyHandler implements MouseMotionListener, MouseListener
                 {
                    game.upgradeTurret(game.findTurret(game.getGrid().getPosition(screen.getMousePoint())));
                 }
+            }
+            if(screen.getTB().restartBtn())
+            {
+                screen.restartGame();
             }
         }
     }
