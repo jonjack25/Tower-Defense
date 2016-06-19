@@ -1,16 +1,18 @@
-import java.awt.*;
+//BaseTurret - Initializes the values and timer for a BaseTurret
+
 import javax.swing.*;
-import java.io.*;
+import java.awt.*;
 
 public class BaseTurret extends Turret
 {
-    //CONSTANTS
+    //Constants
+    private final int UPGRADE = 20;
     private final int RELOAD = 2000;
     public static final int DAMAGE = 250;
-    private final int UPGRADE = 20;
-    public static final int PURCHASE_COST = 300;
+    public static final int PURCHASE_COST = 250;
     private final Image BASE = new ImageIcon("resources/circleTurretRed.png").getImage();
     
+    //Constructors
     public BaseTurret()
     {
         super();
