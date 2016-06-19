@@ -1,16 +1,17 @@
-import java.awt.Graphics;
+//QuickEnemy - Initializes the values and timer for a QuickEnemy
+
 import java.awt.*;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 public class QuickEnemy extends Enemy
 {
+   //Constants
    private final int SPEED = 150;
    public static int HEALTH = 100;
-   public static int KILL_COST = 25;
+   private final int KILL_COST = 25;
    private final Image QUICK = new ImageIcon("resources/fastenemy.png").getImage();
 
+   //Constructors
    public QuickEnemy(Position p)
    {
        super(p);
