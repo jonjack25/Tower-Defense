@@ -1,16 +1,18 @@
-import java.awt.*;
+//StrongTurret - Initializes the values and timer for a StrongTurret
+
 import javax.swing.*;
-import java.io.*;
+import java.awt.*;
 
 public class StrongTurret extends Turret
 {
-    //CONSTANTS
+    //Constants
+    private final int UPGRADE = 30;
     private final int RELOAD = 4000;
     public static final int DAMAGE = 500;
-    private final int UPGRADE = 30;
     public static final int PURCHASE_COST = 500;
     private final Image STRONG = new ImageIcon("resources/circleTurretBlue.png").getImage();
     
+    //Constructors
     public StrongTurret()
     {
         super();
