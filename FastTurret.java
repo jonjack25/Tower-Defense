@@ -1,16 +1,18 @@
-import java.awt.*;
+//FastTurret - Initializes the values and timer for a FastTurret
+
 import javax.swing.*;
-import java.io.*;
+import java.awt.*;
 
 public class FastTurret extends Turret
 {
-    //COSTANTS
+    //Constants
+    private final int UPGRADE = 10;
     private final int RELOAD = 1000;
     public static final int DAMAGE = 125;
-    private final int UPGRADE = 10;
     public static final int PURCHASE_COST = 700;
     private final Image FAST = new ImageIcon("resources/circleTurretGreen.png").getImage();
     
+    //Constructors
     public FastTurret()
     {
         super();
