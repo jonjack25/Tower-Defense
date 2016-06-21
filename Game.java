@@ -1,3 +1,6 @@
+//Game - The Game class serves as the brain of the program and the bridge between the Entities and Grid and the GUI. 
+//       It implements the purchasing system as well as the interacction between Entities
+
 import java.util.*;
 import java.util.List;
 import javax.swing.Timer;
@@ -5,6 +8,8 @@ import java.awt.*;
 import java.awt.event.*;
 public class Game
 {
+    //Private Fields
+    
     private Grid grid;
     private List<Turret> turrets;
     private List<Enemy> enemies;
@@ -25,6 +30,8 @@ public class Game
     private Timer spawn, interval;
     private GameScreen screen;
 
+    //Constructors
+    
     public Game(GameScreen gs)
     {
         screen = gs;
@@ -40,12 +47,13 @@ public class Game
         randSpawnTime = (int)(Math.random() * 1701) + 300;
         typeToSpawn = (int)(Math.random() * 3);
         spawnPosition = (int)(Math.random() * 4) + 3;
-        lives = 5;
+        lives = 3;
         first = true;
         next = false;
         displayRound = true;
         gameOver = false;
         
+        //The spawn timer continually spawns random types of enemies with varying delays
         spawn = new Timer(randSpawnTime, new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -79,17 +87,22 @@ public class Game
                 }
             }
         });
+        
+        //The interval is a 3 second period after which the round is updated and the enemies scaled
         interval = new Timer(3000, new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                 gameState = 1;
                 spawn.start();
-                scaleEnemies();
+                if(round > 1)
+                    scaleEnemies();
             }
         });
         spawn.setInitialDelay(0);
     }
+    
+    //Accessors
     
     public Grid getGrid()
     {
@@ -106,11 +119,20 @@ public class Game
         return round;
     }
     
+    public int getLives()
+    {
+        return lives;
+    }
+    
     public boolean getGameOver()
     {
         return gameOver;
     }
     
+    //Methods
+    
+    //Postcondition - game is updated, with either the interval or the spawn timer running at all times. This methods moves enemies, bullets, and fires turrets.
+    //                It also removes Entities and checks whether the game is over or switching levels.                 
     public void updateGame()
     {
         if(gameState == 0)
@@ -165,6 +187,7 @@ public class Game
         }
     }
     
+    //Postcondition - draws all the Entities, the grid, and any other necessary displays(like round)
     public void draw(Graphics g)
     {
         grid.draw(g);
@@ -186,13 +209,16 @@ public class Game
         
         if(gameOver)
         {
-            g.setColor(new Color(255, 0, 0));
+            g.setColor(new Color(0, 0, 0));
             g.setFont(new Font("SansSerif", Font.BOLD, 100));
             
             g.drawString("GAME OVER", screen.getFrame().getWidth() / 2 - 300, screen.getFrame().getHeight() / 2 - 100);
         }
     }
     
+    
+    //Precondition - p != null
+    //Postcondition - returns the Turret that exists at the Position passed in
     public Turret findTurret(Position p)
     {
         if(p == null)
@@ -213,6 +239,8 @@ public class Game
         return null;
     }
     
+    //Precondition - There are enough coins for a purchase
+    //Postcondition - Returns a new StrongTurret
     public Turret purchaseStrongTurret()
     {
         if(coins >= StrongTurret.PURCHASE_COST)
@@ -223,6 +251,8 @@ public class Game
         return null;
     }
     
+    //Precondition - There are enough coins for a purchase
+    //Postcondition - Returns a new FastTurret
     public Turret purchaseFastTurret()
     {
         if(coins >= FastTurret.PURCHASE_COST)
@@ -233,6 +263,8 @@ public class Game
         return null;
     }
     
+    //Precondition - There are enough coins for a purchase
+    //Postcondition - Returns a new BaseTurret
     public Turret purchaseBaseTurret()
     {
         if(coins >= BaseTurret.PURCHASE_COST)
@@ -243,21 +275,26 @@ public class Game
         return null;
     }
     
+    //Postcondition - cancels a purchase by adding the purchase cost back to coins
     public void cancelBasePurchase()
     {
         coins += BaseTurret.PURCHASE_COST;
     }
     
+    ////Postcondition - cancels a purchase by adding the purchase cost back to coins
     public void cancelFastPurchase()
     {
         coins += FastTurret.PURCHASE_COST;
     }
     
+    //Postcondition - cancels a purchase by adding the purchase cost back to coins
     public void cancelStrongPurchase()
     {
         coins += StrongTurret.PURCHASE_COST;
     }
     
+    //Precondition - t != null, p != null
+    //Postcondition - places t at Position p and updates the Grid accordingly
     public void placeTurret(Turret t, Position p)
     {
         turrets.add(t);
@@ -273,6 +310,8 @@ public class Game
         }
     }
     
+    //Precondition - t != null, there are enough coin for an upgrade
+    //Postcondition - if there are enough coins, t is upgraded
     public void upgradeTurret(Turret t)
     {
         if(coins >= t.getUpgradeCost())
@@ -282,22 +321,22 @@ public class Game
         }
     }
     
+    //Postcondition - adds to coins the reward for killing e
     public void getKillCoins(Enemy e)
     {
         coins += e.getKillCost();
     }
     
+    //Postcondition - enemy count is scaled, as is enemy health
     public void scaleEnemies()
     {
-        QuickEnemy.HEALTH += 50;
-        BaseEnemy.HEALTH += 75;
-        SlowEnemy.HEALTH += 100;
-        QuickEnemy.KILL_COST += 1;
-        BaseEnemy.KILL_COST += 2;
-        SlowEnemy.KILL_COST += 3;
-        enemyCount = 2 * round;
+        QuickEnemy.HEALTH *= 1.15;
+        BaseEnemy.HEALTH *= 1.15;
+        SlowEnemy.HEALTH *= 1.15;
+        enemyCount = (int)(1.5 * round);
     }
     
+    //Postcondition - the enemy list is passed into every Turrets fire method so a Turret can fire if it is able to
     public void fireTurrets()
     {
         for(Turret t : turrets)
@@ -311,6 +350,7 @@ public class Game
         }
     }
     
+    //Postcondition - every bullet is moved towards its enemy
     public void moveBullets()
     {
         for(Bullet b : bullets)
@@ -319,6 +359,7 @@ public class Game
         }
     }
     
+    //Postcondition - for every Enemy, if it can move, and there is a space to move to, the enemy moves and the grid is updated
     public void moveEnemies()
     {
         Point temp;
@@ -379,6 +420,7 @@ public class Game
         }
     }
     
+    //Postcondition - if a bullets has reached an enemy, it damages the enemy and changes the bullet gamestate
     public void collideEnemiesAndBullets()
     {
         for(Bullet b : bullets)
@@ -394,6 +436,7 @@ public class Game
         }
     }
     
+    //Postcondition - removes any Bullet without an active enemy and any enemy with 0 health
     public void removeEntities()
     {
         for(int i = bullets.size() - 1; i >= 0; i--)
@@ -414,6 +457,7 @@ public class Game
         }
     }
     
+    //Postcondition - returns whether an enemy has reached the base
     public boolean baseHasBeenBreached()
     {
         for(int e = enemies.size() - 1; e >= 0; e--)
