@@ -146,6 +146,6 @@ public class Turret extends Entity
     public void upgradeDamage()
     {
         damage += upgrade;
-        upgradeCost = (int)(upgradeCost * 1.5);
+        upgradeCost = (int)(upgradeCost * 1.1);
     }
 }
